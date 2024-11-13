@@ -45,9 +45,9 @@ public UserService(IUserRepository userRepository)
 
     }
 
-    public async Task<List<User>>AllUsers()
+    public async Task<List<User>>AllUsers(int pagenumber,int pagesize)
     {
-        var data=await _userRepository.AllUsers();
+        var data=await _userRepository.AllUsers(pagenumber,pagesize);
 
         if(data == null)
         {

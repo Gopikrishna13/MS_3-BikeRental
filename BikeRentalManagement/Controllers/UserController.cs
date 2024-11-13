@@ -30,11 +30,11 @@ namespace BikeRentalManagement.Controllers
         }
 
         [HttpGet("AllUsers")]
-        public async Task<IActionResult>AllUsers()
+        public async Task<IActionResult>AllUsers(int pagenumber,int pagesize)
         {
             try{
 
-                var data=await _userService.AllUsers();
+                var data=await _userService.AllUsers(pagenumber,pagesize);
                 return Ok(data);
 
             }catch(Exception ex)

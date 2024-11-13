@@ -9,7 +9,7 @@ public interface IUserRepository
 {
 Task <bool> CreateUser(User user);
 
-Task<List<User>>AllUsers();
+Task<List<User>>AllUsers(int pagenumber,int pagesize);
 
 Task <User>UserById(int Id);
 Task <bool> DeleteById(int Id);

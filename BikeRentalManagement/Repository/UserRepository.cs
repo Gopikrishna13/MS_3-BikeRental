@@ -60,16 +60,17 @@ public class UserRepository:IUserRepository
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while sending email: {ex.Message}");
+            Console.WriteLine(ex.Message);
         }
     }
 
     return data != null;
 }
 
-    public async Task<List<User>>AllUsers()
+    public async Task<List<User>>AllUsers(int pagenumber,int pagesize)
     {
-        var data=await _bikeDbContext.Users.ToListAsync();
+        int skip=(pagenumber-1)* pagesize;
+        var data=await _bikeDbContext.Users.Skip(skip).Take(pagesize).ToListAsync();
         return data;
     }
 
