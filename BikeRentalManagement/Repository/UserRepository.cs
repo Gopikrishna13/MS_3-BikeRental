@@ -79,7 +79,7 @@ public class UserRepository:IUserRepository
 
 public async Task<bool> UpdateUser(int Id, User user)
 {
-    var existingUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.UserId == Id);
+    var existingUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.UserId == Id );
 
     if (existingUser == null)
     {
@@ -88,10 +88,10 @@ public async Task<bool> UpdateUser(int Id, User user)
 
  
 
- var checkUser=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.Email==user.Email || u.NIC==user.NIC || u.LicenseNumber==user.LicenseNumber);
+ var checkUser=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.Email==user.Email && u.UserId!=Id);
         if(checkUser!=null)
         {
-            throw new Exception("User already Exists!");
+            throw new Exception("Email already Exists!");
         }
     existingUser.FirstName = user.FirstName;
     existingUser.LastName = user.LastName;
@@ -104,17 +104,9 @@ public async Task<bool> UpdateUser(int Id, User user)
     existingUser.LicenseImage = user.LicenseImage;
     existingUser.CameraCapture = user.CameraCapture;
 
+_bikeDbContext.Entry(existingUser).State=EntityState.Modified;
 
-    _bikeDbContext.Entry(existingUser).Property(x => x.FirstName).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.LastName).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.Email).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.MobileNumber).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.NIC).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.Password).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.LicenseNumber).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.Role).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.LicenseImage).IsModified = true;
-    _bikeDbContext.Entry(existingUser).Property(x => x.CameraCapture).IsModified = true;
+
 
    
 
