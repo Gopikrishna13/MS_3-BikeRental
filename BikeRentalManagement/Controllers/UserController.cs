@@ -83,5 +83,19 @@ namespace BikeRentalManagement.Controllers
         }
 
 
+        [HttpPost("Login")]
+        public async Task <IActionResult> Login(LoginRequestDTO loginrequest)
+        {
+            try{
+                var data=await _userService.Login(loginrequest);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

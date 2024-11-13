@@ -13,4 +13,7 @@ Task <UserResponseDTO>UserById(int Id);
 Task <bool> DeleteById(int Id);
 
 Task <bool> UpdateUser(int Id,UserRequestDTO userRequestDTO);
+
+
+Task <bool> Login(LoginRequestDTO loginrequest);
 }

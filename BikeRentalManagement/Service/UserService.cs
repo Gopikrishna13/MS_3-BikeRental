@@ -111,4 +111,18 @@ public UserService(IUserRepository userRepository)
        return data;
     }
 
+    public async Task <bool> Login(LoginRequestDTO loginrequest)
+    {
+
+        var data=await _userRepository.Login(loginrequest);
+
+        if(data)
+        {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 }

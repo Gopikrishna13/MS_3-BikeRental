@@ -126,7 +126,22 @@ _bikeDbContext.Entry(existingUser).State=EntityState.Modified;
     return true;
 }
 
+public async Task <bool> Login(LoginRequestDTO loginrequest)
+{
+    var data=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.Email==loginrequest.Email);
 
+    if(data == null)
+    {
+        throw new Exception("Invalid Email ID!");
+    }
+
+    if(!BCrypt.Net.BCrypt.Verify(loginrequest.Password,data.Password))
+    {
+        throw new Exception("Wrong Password");
+    }
+
+    return true;
+}
 
 
 
