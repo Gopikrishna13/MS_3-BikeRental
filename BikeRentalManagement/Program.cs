@@ -1,3 +1,4 @@
+using System.Text;
 using BikeRentalManagement.Database;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.IService;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,10 @@ option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection
 
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline

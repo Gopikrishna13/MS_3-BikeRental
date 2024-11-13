@@ -1,20 +1,26 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using BikeRentalManagement.Database;
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BikeRentalManagement.Repository;
 
 public class UserRepository:IUserRepository
 {
     private readonly BikeDbContext _bikeDbContext;
+     private readonly IConfiguration _configuration;
 
-    public UserRepository(BikeDbContext bikeDbContext)
+    public UserRepository(BikeDbContext bikeDbContext,IConfiguration configuration)
     {
         _bikeDbContext=bikeDbContext;
+        _configuration = configuration;
 
     }
 
@@ -140,9 +146,38 @@ public async Task <bool> Login(LoginRequestDTO loginrequest)
         throw new Exception("Wrong Password");
     }
 
+var token=CreateToken(data);
+Console.WriteLine(token);
     return true;
 }
 
+
+ private string CreateToken(User user)
+{
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+   
+    var claims = new[]
+    {
+        
+        new Claim("userId", user.UserId.ToString()),
+        new Claim("email", user.Email),
+        new Claim("role", user.Role.ToString())
+    };
+
+
+    var token = new JwtSecurityToken(
+        issuer: "Me2",
+        audience: "Users",
+        claims: claims,
+        expires: DateTime.UtcNow.AddMinutes(30),
+        signingCredentials: credentials
+    );
+
+  
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
 
 
 }
