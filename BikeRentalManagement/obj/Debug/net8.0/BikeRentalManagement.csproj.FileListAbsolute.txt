@@ -140,3 +140,5 @@ C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\refint\B
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\BikeRentalManagement.pdb
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\BikeRentalManagement.genruntimeconfig.cache
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\ref\BikeRentalManagement.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\BCrypt.Net-Core.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\BikeRentalManagement.sourcelink.json

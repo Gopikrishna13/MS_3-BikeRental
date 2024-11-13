@@ -34,7 +34,7 @@ public UserService(IUserRepository userRepository)
 
 
         };
-
+  user.Password=BCrypt.Net.BCrypt.HashPassword(user.Password);
         var data=await _userRepository.CreateUser(user);
         if(data)
         {
