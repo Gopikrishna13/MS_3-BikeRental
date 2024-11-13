@@ -1,3 +1,4 @@
+using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IService;
 using Microsoft.AspNetCore.Http;
@@ -88,6 +89,20 @@ namespace BikeRentalManagement.Controllers
         {
             try{
                 var data=await _userService.Login(loginrequest);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("AddEmail")]
+        public async Task <IActionResult> AddEmail(Email mail)
+        {
+            try{
+                var data=await _userService.AddEmail(mail);
                 return Ok(data);
 
             }catch(Exception ex)

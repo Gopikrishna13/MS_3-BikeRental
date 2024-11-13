@@ -120,4 +120,15 @@ public UserService(IUserRepository userRepository)
 
     }
 
+    public async Task <bool> AddEmail(Email mail)
+    {
+        var data=await _userRepository.AddEmail(mail);
+        if(data)
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

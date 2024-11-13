@@ -27,8 +27,9 @@ public class UserRepository:IUserRepository
 
     }
 
-  public async Task<bool> CreateUser(User user)
+public async Task<bool> CreateUser(User user)
 {
+ 
     var checkUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email || u.NIC == user.NIC || u.LicenseNumber == user.LicenseNumber);
     if (checkUser != null)
     {
@@ -38,17 +39,16 @@ public class UserRepository:IUserRepository
     var data = await _bikeDbContext.Users.AddAsync(user);
     await _bikeDbContext.SaveChangesAsync();
 
-  
+ 
     var emailMessage = new MimeMessage();
     emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
     emailMessage.To.Add(new MailboxAddress("", user.Email));
     emailMessage.Subject = "Activate Account!";
     emailMessage.Body = new TextPart("plain")
     {
-        Text = $"Welcome {user.FirstName}\n Thank You For Registering our site \n Your Username: {user.Email}\nYour Password: {12345678}\nPlease Update Your Password!"
+        Text = $"Welcome {user.FirstName}\n Thank you for registering on our site.\nYour Username: {user.Email}\nYour Password: {12345678}\nPlease update your password!"
     };
 
-   
     using (var client = new SmtpClient())
     {
         try
@@ -61,11 +61,37 @@ public class UserRepository:IUserRepository
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            return false;  
         }
     }
 
-    return data != null;
+    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.UserPassword);
+    if (email == null)
+    {
+        throw new Exception("Failed to get Email!");
+    }
+
+   
+    var notification = new Notification
+    {
+        UserId = user.UserId,   
+        EmailId = email.EmailId,
+        Date = DateTime.UtcNow 
+    };
+
+  
+    _bikeDbContext.Notifications.Add(notification);
+
+  Console.WriteLine(user.UserId+""+email.EmailId);
+    var result = await _bikeDbContext.SaveChangesAsync();
+    _bikeDbContext.Entry(notification).Reload();
+
+   
+    return result > 0;
 }
+
+
+
 
     public async Task<List<User>>AllUsers(int pagenumber,int pagesize)
     {
@@ -202,5 +228,17 @@ Console.WriteLine(token);
     return new JwtSecurityTokenHandler().WriteToken(token);
 }
 
+public async Task <bool> AddEmail(Email mail)
+{
+    var data=await _bikeDbContext.Emails.AddAsync(mail);
+    await _bikeDbContext.SaveChangesAsync();
+    if(data != null)
+    {
+        return true;
+    }else{
+        return false;
+    }
+    
+}
 
 }

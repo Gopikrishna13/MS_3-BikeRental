@@ -25,15 +25,15 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<User>()
         .Property(u => u.Role)
-        .HasConversion<int>();
+        .HasConversion<string>();
 
     modelBuilder.Entity<Email>()
     .Property(u=>u.EmailType)
-    .HasConversion<int>();
+    .HasConversion<string>();
 
     modelBuilder.Entity<RentalRequest>()
     .Property(u=>u.Status)
-    .HasConversion<int>();
+    .HasConversion<string>();
 
     modelBuilder.Entity<User>()
         .HasMany(u => u.RentalRequests)
