@@ -142,3 +142,6 @@ C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\BikeRent
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\ref\BikeRentalManagement.dll
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\BCrypt.Net-Core.dll
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\BikeRentalManagement.sourcelink.json
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\MailKit.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\MimeKit.dll

@@ -16,5 +16,5 @@ Task <bool> DeleteById(int Id);
 
 Task <bool> UpdateUser(int Id,User user);
 
-Task <bool> Login(LoginRequestDTO loginrequest);
+Task <string> Login(LoginRequestDTO loginrequest);
 }
