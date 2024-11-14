@@ -25,7 +25,8 @@ option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 
-
+builder.Services.AddScoped<IBikeService,BikeService>();
+builder.Services.AddScoped<IBikeRepository,BikeRepository>();
 
 
 var app = builder.Build();
