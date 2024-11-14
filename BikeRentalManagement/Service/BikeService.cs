@@ -61,4 +61,16 @@ public class BikeService:IBikeService
         return false;
     }
  }
+
+ public async  Task <List<Brand>> GetAllModels()
+ {
+    var data=await _bikerepository.GetAllModels();
+
+    if(data != null)
+    {
+        return data;
+    }else{
+        throw new Exception("No Data Found!");
+    }
+ }
 }

@@ -55,5 +55,18 @@ namespace BikeRentalManagement
             }
 
         }
+
+        [HttpGet("GetAllModels")]
+        public async Task <IActionResult> GetAllModels()
+        {
+            try{
+                var data=await _bikeservice.GetAllModels();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

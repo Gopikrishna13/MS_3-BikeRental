@@ -59,4 +59,10 @@ public class BikeRepository:IBikeRepository
         }
     }
 
+    public async Task <List<Brand>> GetAllModels()
+    {
+        var  result=await _bikeDbContext.Brands.Include(b=>b.Models).ToListAsync();
+        return result;
+    }
+
 }

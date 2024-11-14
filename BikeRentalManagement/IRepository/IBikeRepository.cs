@@ -10,4 +10,6 @@ public interface IBikeRepository
  Task <List<Brand>>AllBrands();
 
  Task <bool> AddModel(Model modelRequest);
+
+ Task <List<Brand>> GetAllModels();
 }

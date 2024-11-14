@@ -11,4 +11,6 @@ public interface IBikeService
 
     Task <bool> AddModel(ModelRequestDTO modelRequestDTO);
 
+    Task <List<Brand>> GetAllModels();
+
 }
