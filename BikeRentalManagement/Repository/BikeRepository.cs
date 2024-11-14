@@ -1,6 +1,7 @@
 using System;
 using BikeRentalManagement.Database;
 using BikeRentalManagement.Database.Entities;
+using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,6 +64,25 @@ public class BikeRepository:IBikeRepository
     {
         var  result=await _bikeDbContext.Brands.Include(b=>b.Models).ToListAsync();
         return result;
+    }
+
+    public async Task <bool>AddBike(BikeRequestDTO bikeRequestDTO)
+    {
+       var  result=await _bikeDbContext.Brands.Include(b=>b.Models).ToListAsync();
+        return true;
+
+    }
+
+    public async Task <bool>CheckRegNo(string RegistrationNumber)
+    {
+         var data=await _bikeDbContext.BikeUnits.FirstOrDefaultAsync(u=>u.RegistrationNumber==RegistrationNumber);
+
+         if(data != null)
+         {
+             return false;
+         }else{
+            return true;
+         }
     }
 
 }

@@ -3,6 +3,7 @@ using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.IService;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace BikeRentalManagement.Service;
 
@@ -72,5 +73,25 @@ public class BikeService:IBikeService
     }else{
         throw new Exception("No Data Found!");
     }
+ }
+
+ public async  Task <bool>AddBike(BikeRequestDTO bikeRequestDTO)
+ {
+    foreach(var bikeUnit in bikeRequestDTO.BikeUnits)
+    {
+        var chkReg=await _bikerepository.CheckRegNo(bikeUnit.RegistrationNumber);
+        if(chkReg == false)
+        {
+            throw new Exception("Registration Number Already Exists !");
+        }
+
+    }
+
+
+    var bike=new Bike{
+
+
+    };
+    return true;
  }
 }

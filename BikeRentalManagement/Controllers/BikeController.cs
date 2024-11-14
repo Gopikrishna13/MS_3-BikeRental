@@ -68,5 +68,18 @@ namespace BikeRentalManagement
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("AddBike")]
+        public async Task <IActionResult>AddBike(BikeRequestDTO bikeRequestDTO)
+        {
+            try{
+                var data=await _bikeservice.AddBike(bikeRequestDTO);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
