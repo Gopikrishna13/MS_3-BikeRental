@@ -1,3 +1,4 @@
+using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IService;
 using Microsoft.AspNetCore.Http;
@@ -127,6 +128,19 @@ namespace BikeRentalManagement
        {
         try{
             var data=await _bikeservice.GetByRegNo(RegNo);
+            return Ok(data);
+
+        }catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+       }
+
+       [HttpPut("UpdateBike")]
+       public async Task <IActionResult>UpdateBike(string RegistrationNumber,BikeUnit unit)
+       {
+        try{
+            var data=await _bikeservice.UpdateBike(RegistrationNumber,unit);
             return Ok(data);
 
         }catch(Exception ex)

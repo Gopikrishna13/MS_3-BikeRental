@@ -187,8 +187,52 @@ public async Task <Bike>GetByRegNo(string RegNo)
     return data;
 }
 
+public async  Task <bool>UpdateBike(string RegistrationNumber,BikeUnit unit)
+{
+    var chkBike=await _bikerepository.CheckRegNo(RegistrationNumber);
+
+    if(chkBike == true)
+    {
+        throw new Exception("No Such Bike!");
+
+    }
+
+//          var bikeImages = new List<BikeImages>();
+
+//     var bikeunit=new BikeUnit{
+//         Year=unit.Year,
+//         RentPerDay=unit.RentPerDay,
+//         bikeImages=bikeImages
+
+        
+   
+// };
+       
+//         foreach (var bikeImage in unit.bikeImages)
+//         {
+//             var image = new BikeImages
+//             {
+                
+//                 Image = bikeImage.Image
+//             };
+//             bikeImages.Add(image);
+
+
+//         };
+
+
+var updatebike=await _bikerepository.UpdateBike(RegistrationNumber,unit);
+if(updatebike)
+{
+return true;
+}else{
+    return false;
+}
+
 
 
  
  }
+
+}
 
