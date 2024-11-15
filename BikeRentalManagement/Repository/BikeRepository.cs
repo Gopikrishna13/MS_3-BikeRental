@@ -131,40 +131,20 @@ public async Task <bool> AddBikeImages(List<BikeImages> bikeImages)
 
 public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
 {
-    var data=from bikeUnit in _bikeDbContext.BikeUnits
-             join bikeImage in _bikeDbContext.BikeImages
-             on bikeUnit.UnitId equals bikeImage.UnitId
-             join bikes in _bikeDbContext.Bikes
-             on bikeUnit.BikeId equals bikes.BikeId
+   
+       
 
-             select new Bike
-             {
-                   BikeId = bikes.BikeId,
-                   ModelId = bikes.ModelId,
-                 
-                   BikeUnits = new List<BikeUnit>{new BikeUnit{
-                           RegistrationNumber = bikeUnit.RegistrationNumber,
-                           Year = bikeUnit.Year,
-                           RentPerDay = bikeUnit.RentPerDay,
 
-                    bikeImages=new List<BikeImages>{
-                        new BikeImages{
-                            Image = bikeImage.Image
-                        }
-                    }
 
-                   
-
-                   }}
-                   
-                 
-               
-
-             };
-               int skip=(pagenumber-1)* pagesize;
+             int skip=(pagenumber-1)* pagesize;
+             var data= await _bikeDbContext.Bikes
+             .Include(b=>b.BikeUnits)
+             .ThenInclude(bi=>bi.bikeImages)
+             .Skip(skip).Take(pagesize)
+             .ToListAsync();
       
-             var bikelist= await data.Skip(skip).Take(pagesize).ToListAsync();
-             return bikelist;
+
+             return data;
 
 
 
@@ -205,6 +185,8 @@ public async Task<Bike> GetById(int id)
     {
         throw new Exception("Error: Bike not found");
     }
+
+
 
     return findbike;
 }
