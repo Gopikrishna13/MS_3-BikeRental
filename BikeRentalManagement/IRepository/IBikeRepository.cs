@@ -24,7 +24,8 @@ Task <bool>AddBikeImages(List<BikeImages> bikeImages);
 Task <int>AddBikeUnit(BikeUnit unit);
 Task <int> AddModelBike(int modelId);
 Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
-Task<bool>checkRental(int id);
-Task<bool>DeleteBike(int id);
+Task<bool>checkRental(string RegistrationNumber);
+Task<bool>DeleteBike(string RegistrationNumber);
 Task <Bike>GetById(int id);
+Task <Bike>GetByRegNo(string RegNo);
 }

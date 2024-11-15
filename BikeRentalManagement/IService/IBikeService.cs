@@ -17,8 +17,10 @@ public interface IBikeService
 
     Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
 
-    Task <bool>DeleteBike(int id);
+    Task <bool>DeleteBike(string RegistrationNumber);
 
     Task <Bike>GetById(int id);
+
+    Task <Bike>GetByRegNo(string RegNo);
 
 }

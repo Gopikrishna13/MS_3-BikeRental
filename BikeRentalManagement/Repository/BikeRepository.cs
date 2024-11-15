@@ -150,21 +150,21 @@ public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
 
 }
 
-public async Task<bool>DeleteBike(int id)
+public async Task<bool>DeleteBike(string RegistrationNumber)
 {
-    var data=await _bikeDbContext.Bikes.FirstOrDefaultAsync(b=>b.BikeId==id);
+    var data=await _bikeDbContext.BikeUnits.FirstOrDefaultAsync(b=>b.RegistrationNumber==RegistrationNumber);
     if(data == null)
     {
         return false;
     }
-    var deletebike= _bikeDbContext.Bikes.Remove(data);
+    var deletebike= _bikeDbContext.BikeUnits.Remove(data);
     await _bikeDbContext.SaveChangesAsync();
     return true;
 }
 
-public async Task <bool>checkRental(int id)
+public async Task <bool>checkRental(string RegistrationNumber)
 {
-        var data = await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r => r.BikeId == id && r.Status.Equals("Pending"));
+        var data = await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r => r.RegistrationNumber == RegistrationNumber && r.Status.Equals("Pending"));
         if(data != null)
         {
             return false;
@@ -189,6 +189,33 @@ public async Task<Bike> GetById(int id)
 
 
     return findbike;
+}
+
+public async Task <Bike>GetByRegNo(string RegNo)
+{
+    var findbike=await _bikeDbContext.BikeUnits
+                
+                 .Include(bi=>bi.bikeImages)
+                 .FirstOrDefaultAsync(b=>b.RegistrationNumber==RegNo);
+
+      if (findbike == null)
+    {
+        throw new Exception("Error: Bike not found");
+    }
+
+
+ var getbike = await _bikeDbContext.Bikes
+        .Include(b => b.BikeUnits)  
+        .ThenInclude(bu => bu.bikeImages)  
+        .FirstOrDefaultAsync(b => b.BikeId == findbike.BikeId);
+
+    if(getbike!=null)
+    {
+        return getbike;
+    }else{
+        throw new Exception("Invalid!");
+    }
+
 }
 
 }

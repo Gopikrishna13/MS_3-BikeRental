@@ -96,11 +96,11 @@ namespace BikeRentalManagement
         }
 
 
-        [HttpDelete("DeleteBike{id}")]
-        public async Task <IActionResult>DeleteBike(int id)
+        [HttpDelete("DeleteBike{RegistrationNumber}")]
+        public async Task <IActionResult>DeleteBike(string RegistrationNumber)
         {
             try{
-                var data=await _bikeservice.DeleteBike(id);
+                var data=await _bikeservice.DeleteBike(RegistrationNumber);
                 return Ok(data);
 
             }catch(Exception ex)
@@ -121,5 +121,18 @@ namespace BikeRentalManagement
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetByRegistrationNumber{RegistrationNumber}")]
+       public async Task <IActionResult>GetByRegNo(string RegNo)
+       {
+        try{
+            var data=await _bikeservice.GetByRegNo(RegNo);
+            return Ok(data);
+
+        }catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+       }
     }
 }

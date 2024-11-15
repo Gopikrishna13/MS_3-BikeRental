@@ -147,16 +147,16 @@ public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
     return data;
 }
 
-public async Task <bool>DeleteBike(int id)
+public async Task <bool>DeleteBike(string RegistrationNumber)
 {
-    var checkRental=await _bikerepository.checkRental(id);
+    var checkRental=await _bikerepository.checkRental(RegistrationNumber);
 
     if(!checkRental)
     {
         throw new Exception("Bike is Booked !");
     }
 
-    var data=await _bikerepository.DeleteBike(id);
+    var data=await _bikerepository.DeleteBike(RegistrationNumber);
     if(data)
     {
         return true;
@@ -174,6 +174,17 @@ public async  Task <Bike>GetById(int id)
     }
     return data;
     
+}
+
+public async Task <Bike>GetByRegNo(string RegNo)
+{
+    var data=await _bikerepository.GetByRegNo(RegNo);
+
+    if(data == null)
+    {
+        throw new Exception("No Such Bike!");
+    }
+    return data;
 }
 
 

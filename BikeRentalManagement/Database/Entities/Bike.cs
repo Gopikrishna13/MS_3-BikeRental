@@ -21,6 +21,8 @@ public class Bike
 
     public Model Model { get; set; }
 
+  
+
 
     public List<BikeUnit> BikeUnits { get; set; } = new List<BikeUnit>();
     public List <RentalRequest> RentalRequests{get;set;}=new List<RentalRequest>();
