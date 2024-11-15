@@ -26,4 +26,5 @@ Task <int> AddModelBike(int modelId);
 Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
 Task<bool>checkRental(int id);
 Task<bool>DeleteBike(int id);
+Task <Bike>GetById(int id);
 }

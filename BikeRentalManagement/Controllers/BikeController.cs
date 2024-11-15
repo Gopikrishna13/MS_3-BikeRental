@@ -108,5 +108,18 @@ namespace BikeRentalManagement
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetById{id}")]
+        public async Task <IActionResult>GetById(int id)
+        {
+            try{
+                var data=await _bikeservice.GetById(id);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

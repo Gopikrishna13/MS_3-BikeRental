@@ -165,6 +165,17 @@ public async Task <bool>DeleteBike(int id)
     }
 }
 
+public async  Task <Bike>GetById(int id)
+{
+    var data=await _bikerepository.GetById(id);
+    if(data == null)
+    {
+        throw new Exception("No Data!");
+    }
+    return data;
+    
+}
+
 
 
  

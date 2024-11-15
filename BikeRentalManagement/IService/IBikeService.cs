@@ -19,4 +19,6 @@ public interface IBikeService
 
     Task <bool>DeleteBike(int id);
 
+    Task <Bike>GetById(int id);
+
 }

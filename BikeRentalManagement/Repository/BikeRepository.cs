@@ -193,4 +193,20 @@ public async Task <bool>checkRental(int id)
         }
 }
 
+public async Task<Bike> GetById(int id)
+{
+    
+    var findbike = await _bikeDbContext.Bikes
+        .Include(b => b.BikeUnits)  
+        .ThenInclude(bu => bu.bikeImages)  
+        .FirstOrDefaultAsync(b => b.BikeId == id);
+
+    if (findbike == null)
+    {
+        throw new Exception("Error: Bike not found");
+    }
+
+    return findbike;
+}
+
 }
