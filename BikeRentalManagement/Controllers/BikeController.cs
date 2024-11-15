@@ -122,7 +122,7 @@ namespace BikeRentalManagement
             }
         }
 
-        [HttpGet("GetByRegistrationNumber{RegistrationNumber}")]
+        [HttpGet("GetByRegistrationNumber")]
        public async Task <IActionResult>GetByRegNo(string RegNo)
        {
         try{

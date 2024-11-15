@@ -205,7 +205,7 @@ public async Task <Bike>GetByRegNo(string RegNo)
 
 
  var getbike = await _bikeDbContext.Bikes
-        .Include(b => b.BikeUnits)  
+        .Include(b => b.BikeUnits.Where(bu=>bu.UnitId==findbike.UnitId))  
         .ThenInclude(bu => bu.bikeImages)  
         .FirstOrDefaultAsync(b => b.BikeId == findbike.BikeId);
 
