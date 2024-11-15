@@ -135,7 +135,7 @@ public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
              join bikeImage in _bikeDbContext.BikeImages
              on bikeUnit.UnitId equals bikeImage.UnitId
              join bikes in _bikeDbContext.Bikes
-             on bikeUnit.BikeID equals bikes.BikeId
+             on bikeUnit.BikeId equals bikes.BikeId
 
              select new Bike
              {
@@ -168,6 +168,29 @@ public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
 
 
 
+}
+
+public async Task<bool>DeleteBike(int id)
+{
+    var data=await _bikeDbContext.Bikes.FirstOrDefaultAsync(b=>b.BikeId==id);
+    if(data == null)
+    {
+        return false;
+    }
+    var deletebike= _bikeDbContext.Bikes.Remove(data);
+    await _bikeDbContext.SaveChangesAsync();
+    return true;
+}
+
+public async Task <bool>checkRental(int id)
+{
+        var data = await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r => r.BikeId == id && r.Status.Equals("Pending"));
+        if(data != null)
+        {
+            return false;
+        }else{
+            return true;
+        }
 }
 
 }

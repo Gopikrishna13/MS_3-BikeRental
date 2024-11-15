@@ -10,7 +10,7 @@ public class BikeUnit
     public int UnitId{get;set;}
 
  [ForeignKey("Bike")]
-    public int BikeID{get;set;}
+    public int BikeId{get;set;}
 
     [Required]
     public string RegistrationNumber{get;set;}

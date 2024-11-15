@@ -94,5 +94,19 @@ namespace BikeRentalManagement
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpDelete("DeleteBike{id}")]
+        public async Task <IActionResult>DeleteBike(int id)
+        {
+            try{
+                var data=await _bikeservice.DeleteBike(id);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

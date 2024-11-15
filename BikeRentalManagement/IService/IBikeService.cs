@@ -17,4 +17,6 @@ public interface IBikeService
 
     Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
 
+    Task <bool>DeleteBike(int id);
+
 }

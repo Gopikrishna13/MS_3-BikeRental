@@ -56,7 +56,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.Entity<Bike>()
         .HasMany(b => b.BikeUnits)
         .WithOne(bu => bu.Bike)
-        .HasForeignKey(bu => bu.BikeID)
+        .HasForeignKey(bu => bu.BikeId)
         .OnDelete(DeleteBehavior.Cascade);
 
     modelBuilder.Entity<Bike>()

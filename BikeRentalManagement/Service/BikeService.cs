@@ -103,7 +103,7 @@ public async Task<bool> AddBike(BikeRequestDTO bikeRequestDTO)
       
         var unit = new BikeUnit
         {
-            BikeID = getbikeid,
+            BikeId = getbikeid,
             RegistrationNumber = bikeUnt.RegistrationNumber,
             Year = bikeUnt.Year,
             RentPerDay = bikeUnt.RentPerDay
@@ -147,6 +147,23 @@ public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
     return data;
 }
 
+public async Task <bool>DeleteBike(int id)
+{
+    var checkRental=await _bikerepository.checkRental(id);
+
+    if(!checkRental)
+    {
+        throw new Exception("Bike is Booked !");
+    }
+
+    var data=await _bikerepository.DeleteBike(id);
+    if(data)
+    {
+        return true;
+    }else{
+        return false;
+    }
+}
 
 
 

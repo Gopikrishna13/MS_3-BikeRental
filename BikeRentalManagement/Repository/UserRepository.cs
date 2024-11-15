@@ -113,7 +113,7 @@ public async Task<bool> CreateUser(User user)
 
     public async Task <bool> DeleteById(int Id)
     {
-         var data=await _bikeDbContext.Users.FindAsync(Id);
+         var data=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.UserId==Id);
 
          if(data == null)
          {
