@@ -4,6 +4,9 @@ using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.IService;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Org.BouncyCastle.Bcpg.Attr;
+using System.Collections.Generic;
+
 
 namespace BikeRentalManagement.Service;
 
@@ -75,23 +78,66 @@ public class BikeService:IBikeService
     }
  }
 
- public async  Task <bool>AddBike(BikeRequestDTO bikeRequestDTO)
- {
-    foreach(var bikeUnit in bikeRequestDTO.BikeUnits)
+public async Task<bool> AddBike(BikeRequestDTO bikeRequestDTO)
+{
+  
+    foreach (var bikeUnit in bikeRequestDTO.BikeUnits)
     {
-        var chkReg=await _bikerepository.CheckRegNo(bikeUnit.RegistrationNumber);
-        if(chkReg == false)
+        var chkReg = await _bikerepository.CheckRegNo(bikeUnit.RegistrationNumber);
+        if (chkReg == false)
         {
-            throw new Exception("Registration Number Already Exists !");
+            throw new Exception("Registration Number Already Exists!");
         }
-
     }
 
+   
+    var modelId = await _bikerepository.FindModelId(bikeRequestDTO.ModelName);
+  
+   var getbikeid = await _bikerepository.AddModelBike(modelId);
+   // var getbikeid = await _bikerepository.getbikeId();
+   
+    var bikeUnits = new List<BikeUnit>();
 
-    var bike=new Bike{
+    foreach (var bikeUnt in bikeRequestDTO.BikeUnits)
+    {
+      
+        var unit = new BikeUnit
+        {
+            BikeID = getbikeid,
+            RegistrationNumber = bikeUnt.RegistrationNumber,
+            Year = bikeUnt.Year,
+            RentPerDay = bikeUnt.RentPerDay
+        };
+      
+        bikeUnits.Add(unit);
+
+    
+        await _bikerepository.AddBikeUnit(unit);
 
 
-    };
+        var bikeImages = new List<BikeImages>();
+
+       
+        foreach (var bikeImage in bikeUnt.bikeImages)
+        {
+            var image = new BikeImages
+            {
+                UnitId = unit.UnitId, 
+                Image = bikeImage.Image
+            };
+            bikeImages.Add(image);
+        }
+
+       
+        await _bikerepository.AddBikeImages(bikeImages);
+    }
+
     return true;
- }
 }
+
+
+
+
+ 
+ }
+

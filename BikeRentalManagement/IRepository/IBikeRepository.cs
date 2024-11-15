@@ -14,6 +14,13 @@ public interface IBikeRepository
 
  Task <List<Brand>> GetAllModels();
 
- Task <bool>AddBike(BikeRequestDTO bikeRequestDTO);
+ //Task <bool>AddBike(BikeRequestDTO bikeRequestDTO);
  Task <bool>CheckRegNo(string RegistrationNumbers);
+ Task<int>FindModelId(string ModelName);
+
+ //Task<int>getbikeId();
+
+Task <bool>AddBikeImages(List<BikeImages> bikeImages);
+Task <int>AddBikeUnit(BikeUnit unit);
+Task <int> AddModelBike(int modelId);
 }

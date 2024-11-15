@@ -17,6 +17,6 @@ public class BikeImages
     [Required]
     public byte[] Image{get;set;}
 
-    public BikeUnit?bikeUnit{get;set;}
+    public BikeUnit?BikeUnit{get;set;}
 
 }

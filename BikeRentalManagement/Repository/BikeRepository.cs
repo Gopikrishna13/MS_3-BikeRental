@@ -66,12 +66,11 @@ public class BikeRepository:IBikeRepository
         return result;
     }
 
-    public async Task <bool>AddBike(BikeRequestDTO bikeRequestDTO)
-    {
-       var  result=await _bikeDbContext.Brands.Include(b=>b.Models).ToListAsync();
-        return true;
+    // public async Task <bool>AddBike(BikeRequestDTO bikeRequestDTO)
+    // {
+       
 
-    }
+    // }
 
     public async Task <bool>CheckRegNo(string RegistrationNumber)
     {
@@ -84,5 +83,46 @@ public class BikeRepository:IBikeRepository
             return true;
          }
     }
+ public async  Task<int>FindModelId(string ModelName)
+ {
+    var findbike=await _bikeDbContext.Models.FirstOrDefaultAsync(m=>m.ModelName==ModelName);
+    if(findbike == null)
+    {
+        throw new Exception("No Such Model!");
+    }
+
+    var bikeId=findbike.ModelId;
+    return bikeId;
+ }
+
+public async Task<int>AddModelBike(int modelId)
+{
+     var newBike = new Bike
+    {
+        ModelId = modelId
+    };
+
+    await _bikeDbContext.Bikes.AddAsync(newBike);
+    await _bikeDbContext.SaveChangesAsync();
+    return newBike.BikeId;
+
+    
+}
+
+public async Task<int>AddBikeUnit(BikeUnit unit)
+
+{
+    await _bikeDbContext.BikeUnits.AddAsync(unit);
+    await _bikeDbContext.SaveChangesAsync();
+    return unit.UnitId;
+
+}
+
+public async Task <bool> AddBikeImages(List<BikeImages> bikeImages)
+{
+    await _bikeDbContext.BikeImages.AddRangeAsync(bikeImages);
+    await _bikeDbContext.SaveChangesAsync();
+    return true;
+}
 
 }
