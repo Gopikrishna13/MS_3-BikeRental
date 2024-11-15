@@ -135,9 +135,9 @@ public async Task<bool> AddBike(BikeRequestDTO bikeRequestDTO)
     return true;
 }
 
-public async Task<List<Bike>>AllBikes()
+public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
 {
-    var data=await _bikerepository.AllBikes();
+    var data=await _bikerepository.AllBikes(pagenumber,pagesize);
 
     if(data == null)
     {

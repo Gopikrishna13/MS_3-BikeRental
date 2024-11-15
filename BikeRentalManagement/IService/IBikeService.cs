@@ -15,6 +15,6 @@ public interface IBikeService
 
     Task <bool>AddBike(BikeRequestDTO bikeRequestDTO);
 
-    Task<List<Bike>>AllBikes();
+    Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
 
 }

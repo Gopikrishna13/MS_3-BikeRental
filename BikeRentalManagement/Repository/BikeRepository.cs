@@ -129,7 +129,7 @@ public async Task <bool> AddBikeImages(List<BikeImages> bikeImages)
 }
 
 
-public async Task<List<Bike>>AllBikes()
+public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
 {
     var data=from bikeUnit in _bikeDbContext.BikeUnits
              join bikeImage in _bikeDbContext.BikeImages
@@ -161,8 +161,9 @@ public async Task<List<Bike>>AllBikes()
                
 
              };
-
-             var bikelist= await data.ToListAsync();
+               int skip=(pagenumber-1)* pagesize;
+      
+             var bikelist= await data.Skip(skip).Take(pagesize).ToListAsync();
              return bikelist;
 
 
