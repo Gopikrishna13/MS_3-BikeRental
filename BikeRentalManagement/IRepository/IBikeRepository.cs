@@ -23,4 +23,5 @@ public interface IBikeRepository
 Task <bool>AddBikeImages(List<BikeImages> bikeImages);
 Task <int>AddBikeUnit(BikeUnit unit);
 Task <int> AddModelBike(int modelId);
+Task<List<Bike>>AllBikes();
 }

@@ -135,6 +135,18 @@ public async Task<bool> AddBike(BikeRequestDTO bikeRequestDTO)
     return true;
 }
 
+public async Task<List<Bike>>AllBikes()
+{
+    var data=await _bikerepository.AllBikes();
+
+    if(data == null)
+    {
+        throw new Exception("Data Not Found!");
+        
+    }
+    return data;
+}
+
 
 
 

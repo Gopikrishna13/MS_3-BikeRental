@@ -3,7 +3,9 @@ using BikeRentalManagement.Database;
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
+using BikeRentalManagement.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BikeRentalManagement.Repository;
 
@@ -97,6 +99,7 @@ public class BikeRepository:IBikeRepository
 
 public async Task<int>AddModelBike(int modelId)
 {
+    //can't add single value into a model
      var newBike = new Bike
     {
         ModelId = modelId
@@ -123,6 +126,47 @@ public async Task <bool> AddBikeImages(List<BikeImages> bikeImages)
     await _bikeDbContext.BikeImages.AddRangeAsync(bikeImages);
     await _bikeDbContext.SaveChangesAsync();
     return true;
+}
+
+
+public async Task<List<Bike>>AllBikes()
+{
+    var data=from bikeUnit in _bikeDbContext.BikeUnits
+             join bikeImage in _bikeDbContext.BikeImages
+             on bikeUnit.UnitId equals bikeImage.UnitId
+             join bikes in _bikeDbContext.Bikes
+             on bikeUnit.BikeID equals bikes.BikeId
+
+             select new Bike
+             {
+                   BikeId = bikes.BikeId,
+                   ModelId = bikes.ModelId,
+                 
+                   BikeUnits = new List<BikeUnit>{new BikeUnit{
+                           RegistrationNumber = bikeUnit.RegistrationNumber,
+                           Year = bikeUnit.Year,
+                           RentPerDay = bikeUnit.RentPerDay,
+
+                    bikeImages=new List<BikeImages>{
+                        new BikeImages{
+                            Image = bikeImage.Image
+                        }
+                    }
+
+                   
+
+                   }}
+                   
+                 
+               
+
+             };
+
+             var bikelist= await data.ToListAsync();
+             return bikelist;
+
+
+
 }
 
 }
