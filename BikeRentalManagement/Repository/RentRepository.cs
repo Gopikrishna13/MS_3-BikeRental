@@ -76,4 +76,10 @@ public class RentRepository:IRentRepository
         }
     }
 
+    public async Task <RentalRequest>GetRequestById(int id)
+    {
+        var data=await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r=>r.RequestId==id);
+        return data;
+    }
+
 }

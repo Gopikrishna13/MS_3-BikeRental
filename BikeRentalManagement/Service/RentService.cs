@@ -74,4 +74,15 @@ public class RentService:IRentService
 
  }
 
+ public async  Task <RentalRequest>GetRequestById(int id)
+ {
+    var data=await _rentRepository.GetRequestById(id);
+
+    if(data == null)
+    {
+        throw new Exception("No Data Found!");
+    }
+    return data;
+ }
+
 }

@@ -10,4 +10,5 @@ public interface IRentRepository
     Task<bool> RequestRent(RentalRequest rentRequest);
    Task <bool>CheckRequest(string RegistrationNumber,DateTime FromDate,DateTime ToDate);
     Task <List<RentalRequest>> AllRequest();
+    Task <RentalRequest>GetRequestById(int id);
 }

@@ -10,6 +10,7 @@ public interface IRentService
     Task<bool>RequestRent(RentRequestDTO rentRequestDTO);
     Task<List<BookedDatesResponseDTO>>GetBikeBookedDates(string RegistrationNumber);
    Task <List<RentalRequest>> AllRequest();
+   Task <RentalRequest>GetRequestById(int id);
     
 
 }
