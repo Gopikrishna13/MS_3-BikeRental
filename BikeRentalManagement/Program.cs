@@ -34,6 +34,9 @@ builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IBikeService,BikeService>();
 builder.Services.AddScoped<IBikeRepository,BikeRepository>();
 
+builder.Services.AddScoped<IRentService,RentService>();
+builder.Services.AddScoped<IRentRepository,RentRepository>();
+
 
 var app = builder.Build();
 

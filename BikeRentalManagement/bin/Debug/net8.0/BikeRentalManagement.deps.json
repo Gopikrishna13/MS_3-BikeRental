@@ -13,6 +13,7 @@
           "Microsoft.EntityFrameworkCore": "8.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.10",
+          "OpenCV.Net": "3.4.2",
           "Swashbuckle.AspNetCore": "6.9.0"
         },
         "runtime": {
@@ -689,6 +690,14 @@
           }
         }
       },
+      "OpenCV.Net/3.4.2": {
+        "runtime": {
+          "lib/netstandard2.0/OpenCV.Net.dll": {
+            "assemblyVersion": "3.4.2.0",
+            "fileVersion": "3.4.2.0"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.9.0": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
@@ -1329,6 +1338,13 @@
       "sha512": "sha512-KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
       "path": "mono.texttemplating/2.2.1",
       "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
+    },
+    "OpenCV.Net/3.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RPbhCesKljnciMKcWnzWHCRnR4Y/EoG723oWsiau/yrPYOOWmtSBaGDV0/6ZA7Wl2tj3U+JfvB8Jb9fzh7+lyg==",
+      "path": "opencv.net/3.4.2",
+      "hashPath": "opencv.net.3.4.2.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.9.0": {
       "type": "package",

@@ -971,6 +971,19 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "OpenCV.Net/3.4.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/OpenCV.Net.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/OpenCV.Net.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.9.0": {
         "type": "package",
         "dependencies": {
@@ -3471,6 +3484,25 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "OpenCV.Net/3.4.2": {
+      "sha512": "RPbhCesKljnciMKcWnzWHCRnR4Y/EoG723oWsiau/yrPYOOWmtSBaGDV0/6ZA7Wl2tj3U+JfvB8Jb9fzh7+lyg==",
+      "type": "package",
+      "path": "opencv.net/3.4.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "content/OpenCV.Net.dll.config",
+        "icon.png",
+        "lib/net462/OpenCV.Net.dll",
+        "lib/net462/OpenCV.Net.xml",
+        "lib/netstandard2.0/OpenCV.Net.dll",
+        "lib/netstandard2.0/OpenCV.Net.xml",
+        "opencv.net.3.4.2.nupkg.sha512",
+        "opencv.net.nuspec",
+        "runtime.json"
+      ]
+    },
     "Swashbuckle.AspNetCore/6.9.0": {
       "sha512": "lvI+XHF21tkwXd2nDCLGJsdhdUYsY3Ax2fWUlvw81Oa6EedtnIAf5tThy8ZnPcz/9/TwsLgjgtX9ifOCIjbEPA==",
       "type": "package",
@@ -4742,6 +4774,7 @@
       "Microsoft.EntityFrameworkCore >= 8.0.10",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.10",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.10",
+      "OpenCV.Net >= 3.4.2",
       "Swashbuckle.AspNetCore >= 6.9.0"
     ]
   },
@@ -4751,11 +4784,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
+      "projectUniqueName": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
       "projectName": "BikeRentalManagement",
-      "projectPath": "c:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
+      "projectPath": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
       "packagesPath": "C:\\Users\\mpoul\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\obj\\",
+      "outputPath": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mpoul\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -4808,6 +4841,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[8.0.10, )"
+          },
+          "OpenCV.Net": {
+            "target": "Package",
+            "version": "[3.4.2, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

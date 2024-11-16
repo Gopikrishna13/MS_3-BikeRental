@@ -145,3 +145,4 @@ C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\obj\Debug\net8.0\BikeRent
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\MailKit.dll
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\MimeKit.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\OpenCV.Net.dll

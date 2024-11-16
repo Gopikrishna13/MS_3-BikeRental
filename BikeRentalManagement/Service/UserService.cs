@@ -6,6 +6,7 @@ using BikeRentalManagement.IRepository;
 using BikeRentalManagement.IService;
 using Microsoft.AspNetCore.Http.HttpResults;
 
+
 namespace BikeRentalManagement.Service;
 
 public class UserService:IUserService
@@ -35,10 +36,11 @@ public UserService(IUserRepository userRepository)
 
         };
   user.Password=BCrypt.Net.BCrypt.HashPassword(user.Password);
+    
         var data=await _userRepository.CreateUser(user);
         if(data)
         {
-            return (true);
+            return true;
         }else{
             return false;
         }
