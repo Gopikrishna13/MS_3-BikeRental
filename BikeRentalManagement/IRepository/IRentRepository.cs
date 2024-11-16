@@ -8,5 +8,5 @@ public interface IRentRepository
 {
     Task<List<BookedDatesResponseDTO>> GetBikeBookedDates(string registrationNumber);
     Task<bool> RequestRent(RentalRequest rentRequest);
-//Task <bool>CheckRequest(DateTime FromDate,DateTime ToDate);
+   Task <bool>CheckRequest(string RegistrationNumber,DateTime FromDate,DateTime ToDate);
 }

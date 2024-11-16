@@ -32,12 +32,12 @@ public class RentService:IRentService
 
         };
 
-        // var checkRequest=await _rentRepository.CheckRequest(rentRequestDTO.FromDate,rentRequestDTO.ToDate);
+        var checkRequest=await _rentRepository.CheckRequest(rentRequestDTO.RegistrationNumber,rentRequestDTO.FromDate,rentRequestDTO.ToDate);
 
-        // if(checkRequest)
-        // {
-        //     throw new Exception("Already Booked!");
-        // }
+        if(checkRequest)
+        {
+            throw new Exception("Already Booked!");
+        }
 
         var data=await _rentRepository.RequestRent(rentRequest);
 

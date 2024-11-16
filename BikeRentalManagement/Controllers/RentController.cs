@@ -31,7 +31,7 @@ namespace BikeRentalManagement.Controllers
         }
 
 
-        [HttpGet("BikeBookedDates{RegNo}")]
+        [HttpGet("BikeBookedDates")]
         public async Task<IActionResult>GetBikeBookedDates(string RegistrationNumber)
         {
             try{

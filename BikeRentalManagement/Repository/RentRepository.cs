@@ -30,10 +30,21 @@ public class RentRepository:IRentRepository
 
     }
 
-    // public async Task <bool>CheckRequest(DateTime FromDate,DateTime ToDate)
-    // {
+    public async Task <bool>CheckRequest(string RegistrationNumber,DateTime FromDate,DateTime ToDate)
+    {
 
-    // }
+        var data=await _bikeDbContext.RentalRequests
+                .Where(r=>r.RegistrationNumber==RegistrationNumber && r.Status.Equals("Pending")).ToListAsync();
+        foreach(var d in data)
+        {
+            if(d.FromDate < ToDate && d.ToDate > FromDate)
+            {
+                return true;
+
+            }
+        }
+      return false;
+    }
 
     public async Task<List<BookedDatesResponseDTO>> GetBikeBookedDates(string registrationNumber)
     {
