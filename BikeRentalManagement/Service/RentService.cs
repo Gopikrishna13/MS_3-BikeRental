@@ -63,5 +63,15 @@ public class RentService:IRentService
         return data;
 
      }
+ public async Task <List<RentalRequest>> AllRequest()
+ {
+    var data=await _rentRepository.AllRequest();
+    if(data == null)
+    {
+        throw new Exception("Nothing Found!");
+    }
+    return data;
+
+ }
 
 }

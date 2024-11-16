@@ -65,4 +65,15 @@ public class RentRepository:IRentRepository
         return date;
     }
 
+    public async  Task <List<RentalRequest>> AllRequest()
+    {
+        var data=await _bikeDbContext.RentalRequests.ToListAsync();
+        if(data != null)
+        {
+            return data;
+        }else{
+            return new List<RentalRequest>();
+        }
+    }
+
 }

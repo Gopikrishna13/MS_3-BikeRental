@@ -43,5 +43,18 @@ namespace BikeRentalManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("AllRequest")]
+        public async Task <IActionResult>AllRequest()
+        {
+            try{
+                var data=await _rentservice.AllRequest();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
