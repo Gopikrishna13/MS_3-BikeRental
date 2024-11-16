@@ -69,5 +69,18 @@ namespace BikeRentalManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("AcceptRejectRequest{id}")]
+        public async Task<IActionResult>AcceptRejectRequest(int id,int status)
+        {
+           try{
+            var data=await _rentservice.AcceptRejectRequest(id,status);
+            return Ok(data);
+
+           }catch(Exception ex)
+           {
+            return BadRequest(ex.Message);
+           }
+        }
     }
 }

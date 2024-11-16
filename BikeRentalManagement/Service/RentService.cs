@@ -84,5 +84,15 @@ public class RentService:IRentService
     }
     return data;
  }
+ public async  Task<bool>AcceptRejectRequest(int id,int status)
+ {
+    var data=await _rentRepository.AcceptRejectRequest(id,status);
+    if(data)
+    {
+        return true;
+    }else{
+        return false;
+    }
+ }
 
 }

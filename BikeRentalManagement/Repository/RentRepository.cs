@@ -82,4 +82,29 @@ public class RentRepository:IRentRepository
         return data;
     }
 
+    public async  Task<bool>AcceptRejectRequest(int id,int status)
+    {
+        var request=await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r=>r.RequestId== id);
+        bool requeststatus=true;
+
+        if(request == null)
+        {
+            throw new Exception("Invalid Request!");
+        }
+
+        if(status == 2)
+        {
+            request.Status=Status.Rejected;
+           
+            requeststatus= false;
+        }else if(status == 3)
+        {
+            request.Status=Status.Pending;
+           
+            requeststatus= true;
+        }
+         await _bikeDbContext.SaveChangesAsync();
+        return requeststatus;
+    }
+
 }

@@ -11,6 +11,8 @@ public interface IRentService
     Task<List<BookedDatesResponseDTO>>GetBikeBookedDates(string RegistrationNumber);
    Task <List<RentalRequest>> AllRequest();
    Task <RentalRequest>GetRequestById(int id);
+
+   Task<bool>AcceptRejectRequest(int id,int status);
     
 
 }

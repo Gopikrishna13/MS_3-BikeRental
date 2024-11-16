@@ -11,4 +11,6 @@ public interface IRentRepository
    Task <bool>CheckRequest(string RegistrationNumber,DateTime FromDate,DateTime ToDate);
     Task <List<RentalRequest>> AllRequest();
     Task <RentalRequest>GetRequestById(int id);
+
+     Task<bool>AcceptRejectRequest(int id,int status);
 }
