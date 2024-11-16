@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IbmTiAxjf38=",
+  "dgSpecHash": "zoB14wHCI3U=",
   "success": true,
   "projectFilePath": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
   "expectedPackageFiles": [
@@ -53,6 +53,10 @@
     "C:\\Users\\mpoul\\.nuget\\packages\\mimekit\\4.8.0\\mimekit.4.8.0.nupkg.sha512",
     "C:\\Users\\mpoul\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\mpoul\\.nuget\\packages\\opencv.net\\3.4.2\\opencv.net.3.4.2.nupkg.sha512",
+    "C:\\Users\\mpoul\\.nuget\\packages\\pdfsharpcore\\1.3.65\\pdfsharpcore.1.3.65.nupkg.sha512",
+    "C:\\Users\\mpoul\\.nuget\\packages\\sharpziplib\\1.4.2\\sharpziplib.1.4.2.nupkg.sha512",
+    "C:\\Users\\mpoul\\.nuget\\packages\\sixlabors.fonts\\1.0.0-beta17\\sixlabors.fonts.1.0.0-beta17.nupkg.sha512",
+    "C:\\Users\\mpoul\\.nuget\\packages\\sixlabors.imagesharp\\1.0.4\\sixlabors.imagesharp.1.0.4.nupkg.sha512",
     "C:\\Users\\mpoul\\.nuget\\packages\\swashbuckle.aspnetcore\\6.9.0\\swashbuckle.aspnetcore.6.9.0.nupkg.sha512",
     "C:\\Users\\mpoul\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.9.0\\swashbuckle.aspnetcore.swagger.6.9.0.nupkg.sha512",
     "C:\\Users\\mpoul\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.9.0\\swashbuckle.aspnetcore.swaggergen.6.9.0.nupkg.sha512",

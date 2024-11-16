@@ -5,6 +5,10 @@ using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.ResponseDTOs;
 using BikeRentalManagement.IRepository;
 using Microsoft.EntityFrameworkCore;
+using MailKit.Net.Smtp;
+using MimeKit;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 
 namespace BikeRentalManagement.Repository;
 
@@ -85,7 +89,18 @@ public class RentRepository:IRentRepository
     public async  Task<bool>AcceptRejectRequest(int id,int status)
     {
         var request=await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r=>r.RequestId== id);
+        if (request == null)
+{
+    throw new Exception("Invalid Request!");
+}
         bool requeststatus=true;
+
+        var getuser=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.UserId== request.UserId);
+        if(getuser == null)
+        {
+            throw new Exception("No Such User!");
+        }
+
 
         if(request == null)
         {
@@ -95,16 +110,137 @@ public class RentRepository:IRentRepository
         if(status == 2)
         {
             request.Status=Status.Rejected;
+
+    var emailMessage = new MimeMessage();
+    emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    emailMessage.To.Add(new MailboxAddress("", getuser.Email));
+    emailMessage.Subject = "Request Rejected!";
+    emailMessage.Body = new TextPart("plain")
+    {
+        Text = $" {getuser.FirstName}\n Your Request is Rejected for Bike {request.RegistrationNumber}.\n"
+    };
+
+    using (var client = new SmtpClient())
+    {
+        try
+        {
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;  
+        }
+    }
+
+    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
+    if (email == null)
+    {
+        throw new Exception("Failed to get Email!");
+    }
+              var notification = new Notification
+    {
+        UserId = getuser.UserId,   
+        EmailId = email.EmailId,
+        Date = DateTime.UtcNow 
+    };
+
+  
+    _bikeDbContext.Notifications.Add(notification); 
            
             requeststatus= false;
-        }else if(status == 3)
+        }
+        
+        
+        
+        else if(status == 3)
         {
             request.Status=Status.Pending;
-           
+         
+var pdfPath = GeneratePdf(request, getuser);
+    var emailMessage = new MimeMessage();
+    emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    emailMessage.To.Add(new MailboxAddress("", getuser.Email));
+    emailMessage.Subject = "Request Accepted!";
+    emailMessage.Body = new TextPart("plain")
+    {
+        Text = $" {getuser.FirstName}\n Your Request is Accepted.\n"
+    };
+     var attachment = new MimePart("application", "pdf")
+        {
+            Content = new MimeContent(File.OpenRead(pdfPath)),
+            ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+            ContentTransferEncoding = ContentEncoding.Base64,
+            FileName = "RequestDetails.pdf"
+        };
+        var multipart = new Multipart("mixed");
+        multipart.Add(emailMessage.Body);
+        multipart.Add(attachment);
+        emailMessage.Body = multipart;
+
+    using (var client = new SmtpClient())
+    {
+        try
+        {
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;  
+        }
+    }
+
+    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
+    if (email == null)
+    {
+        throw new Exception("Failed to get Email!");
+    }
+              var notification = new Notification
+    {
+        UserId = getuser.UserId,   
+        EmailId = email.EmailId,
+        Date = DateTime.UtcNow 
+    };
+
+  
+    _bikeDbContext.Notifications.Add(notification); 
             requeststatus= true;
         }
          await _bikeDbContext.SaveChangesAsync();
         return requeststatus;
     }
+private string GeneratePdf(RentalRequest request, User user)
+{
+    var pdf = new PdfDocument();
+    var page = pdf.AddPage();
+    var graphics = XGraphics.FromPdfPage(page);
+    var font = new XFont("Arial", 12, XFontStyle.Regular);
+
+  
+    graphics.DrawString("Bike Rental Request Details", font, XBrushes.Black, new XPoint(20, 40));
+    graphics.DrawString($"User Name: {user.FirstName} {user.LastName}", font, XBrushes.Black, new XPoint(20, 80));
+    graphics.DrawString($"Email: {user.Email}", font, XBrushes.Black, new XPoint(20, 120));
+    graphics.DrawString($"Bike Registration Number: {request.RegistrationNumber}", font, XBrushes.Black, new XPoint(20, 160));
+    graphics.DrawString($"From Date: {request.FromDate}", font, XBrushes.Black, new XPoint(20, 200));
+    graphics.DrawString($"To Date: {request.ToDate}", font, XBrushes.Black, new XPoint(20, 240));
+    graphics.DrawString($"From Location: {request.FromLocation}", font, XBrushes.Black, new XPoint(20, 280));
+    graphics.DrawString($"To Location: {request.ToLocation}", font, XBrushes.Black, new XPoint(20, 320));
+    graphics.DrawString($"Distance: {request.Distance} km", font, XBrushes.Black, new XPoint(20, 360));
+    graphics.DrawString($"Amount: ${request.Amount}", font, XBrushes.Black, new XPoint(20, 400));
+    graphics.DrawString($"Due: {request.Due}", font, XBrushes.Black, new XPoint(20, 440));
+
+
+    var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "RequestDetails.pdf");
+    pdf.Save(pdfPath);
+
+    return pdfPath;
+}
 
 }
