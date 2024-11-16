@@ -13,4 +13,5 @@ public interface IRentRepository
     Task <RentalRequest>GetRequestById(int id);
 
      Task<bool>AcceptRejectRequest(int id,int status);
+     Task<bool>CancelRequest(int id);
 }

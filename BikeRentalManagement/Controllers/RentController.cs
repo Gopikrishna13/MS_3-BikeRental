@@ -82,5 +82,18 @@ namespace BikeRentalManagement.Controllers
             return BadRequest(ex.Message);
            }
         }
+
+        [HttpPut("CancelRequest{id}")]
+        public async Task<IActionResult>CancelRequest(int id)
+        {
+            try{
+                var data=await _rentservice.CancelRequest(id);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

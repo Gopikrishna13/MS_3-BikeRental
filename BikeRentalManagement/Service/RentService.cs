@@ -95,4 +95,15 @@ public class RentService:IRentService
     }
  }
 
+ public async Task<bool>CancelRequest(int id)
+ {
+    var data=await _rentRepository.CancelRequest(id);
+    if(data)
+    {
+        return true;
+    }else{
+        return false;
+    }
+ }
+
 }

@@ -225,6 +225,7 @@ private string GeneratePdf(RentalRequest request, User user)
 
   
     graphics.DrawString("Bike Rental Request Details", font, XBrushes.Black, new XPoint(20, 40));
+    graphics.DrawString($"Request ID:{request.RequestId}", font, XBrushes.Black, new XPoint(20, 60));
     graphics.DrawString($"User Name: {user.FirstName} {user.LastName}", font, XBrushes.Black, new XPoint(20, 80));
     graphics.DrawString($"Email: {user.Email}", font, XBrushes.Black, new XPoint(20, 120));
     graphics.DrawString($"Bike Registration Number: {request.RegistrationNumber}", font, XBrushes.Black, new XPoint(20, 160));
@@ -241,6 +242,68 @@ private string GeneratePdf(RentalRequest request, User user)
     pdf.Save(pdfPath);
 
     return pdfPath;
+}
+
+
+
+
+public async Task<bool>CancelRequest(int id)
+{
+    var data=await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r=>r.RequestId==id);
+    
+    if(data == null)
+    {
+        throw new Exception("No Such Request!");
+    }
+     var getuser=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.UserId== data.UserId);
+        if(getuser == null)
+        {
+            throw new Exception("No Such User!");
+        }
+
+
+    data.Status=Status.Cancelled;
+      var emailMessage = new MimeMessage();
+    emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    emailMessage.To.Add(new MailboxAddress("", getuser.Email));
+    emailMessage.Subject = "Request Cancelled!";
+    emailMessage.Body = new TextPart("plain")
+    {
+        Text = $" {getuser.FirstName}\n You Cancelled Rental for Bike {data.RegistrationNumber}.\n"
+    };
+
+    using (var client = new SmtpClient())
+    {
+        try
+        {
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;  
+        }
+    }
+
+    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
+    if (email == null)
+    {
+        throw new Exception("Failed to get Email!");
+    }
+              var notification = new Notification
+    {
+        UserId = getuser.UserId,   
+        EmailId = email.EmailId,
+        Date = DateTime.UtcNow 
+    };
+
+  
+    _bikeDbContext.Notifications.Add(notification); 
+    await _bikeDbContext.SaveChangesAsync();
+    return true;
 }
 
 }
