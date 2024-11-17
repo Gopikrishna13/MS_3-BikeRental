@@ -20,6 +20,8 @@ public interface IRentService
 
 
   Task <ICollection<object>>CountHistory(int id);
+
+  Task <bool>LateReturns();
     
 
 }

@@ -163,4 +163,10 @@ public async Task <ICollection<object>>CountHistory(int id)
     return data;
 }
 
+public async Task <bool>LateReturns()
+{
+    var data=await _rentRepository.LateReturns();
+    return data;
+}
+
 }

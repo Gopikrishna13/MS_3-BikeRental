@@ -137,6 +137,19 @@ namespace BikeRentalManagement.Controllers
             }
         }
 
+        [HttpPut("LateReturns")]
+        public async Task <IActionResult>LateReturns()
+        {
+            try{
+                var data=await _rentservice.LateReturns();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     
     }
 }

@@ -451,4 +451,78 @@ public async Task <ICollection<object>>CountHistory(int id)
 
 }
 
+public async Task<bool> LateReturns()
+{
+    var data = await _bikeDbContext.RentalRequests
+        .Where(r => r.Status == Status.Pending && r.Due < 0)
+        .ToListAsync();
+
+    foreach (var req in data)
+    {
+        
+        var usermail = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.UserId == req.UserId);
+        int overdueDays = Math.Abs(req.Due);
+
+    double fine = req.Amount * 0.1 * overdueDays;
+
+   
+       req.Amount += (int)fine;
+        if (usermail == null)
+        {
+            Console.WriteLine($"User not found for UserId: {req.UserId}");
+            continue;
+        }
+
+
+        var emailMessage = new MimeMessage();
+        emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+        emailMessage.To.Add(new MailboxAddress("", usermail.Email));
+        emailMessage.Subject = "Late Return Notice";
+        emailMessage.Body = new TextPart("plain")
+        {
+            Text = $"Dear {usermail.FirstName},\n\nYour rental request is overdue for Request ID:{req.RequestId}. Please return the bike as soon as possible. Your Final Charge :{req.Amount}"
+        };
+
+
+        try
+        {
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync("your-email@gmail.com", "your-app-password");
+                await client.SendAsync(emailMessage);
+                await client.DisconnectAsync(true);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Email sending failed for UserId: {req.UserId}. Error: {ex.Message}");
+            continue;
+        }
+
+
+        var emailTemplate = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
+        if (emailTemplate == null)
+        {
+            Console.WriteLine("Failed to get Email ");
+            continue;
+        }
+
+        var notification = new Notification
+        {
+            UserId = usermail.UserId,
+            EmailId = emailTemplate.EmailId,
+            Date = DateTime.UtcNow
+        };
+
+        _bikeDbContext.Notifications.Add(notification);
+    }
+
+   
+    await _bikeDbContext.SaveChangesAsync();
+
+    return true;
+}
+
+
 }

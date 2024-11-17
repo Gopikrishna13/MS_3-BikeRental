@@ -21,4 +21,6 @@ public interface IRentRepository
       Task <List<RentalResponseDTO>>RequestByUser(int id);
 
       Task <ICollection<object>>CountHistory(int id);
+
+      Task <bool>LateReturns();
 }
