@@ -17,4 +17,6 @@ public interface IRentRepository
      Task<bool>CancelRequest(int id);
 
       Task <bool> UpdateRequest(int id,RentalRequest rentRequest);
+
+      Task <List<RentalRequest>>RequestByUser(int id);
 }

@@ -224,7 +224,7 @@ private string GeneratePdf(RentalRequest request, User user)
     var graphics = XGraphics.FromPdfPage(page);
     var font = new XFont("Arial", 12, XFontStyle.Regular);
 
-    request.Due=(request.ToDate- DateTime.UtcNow).Days;
+    request.Due=(request.ToDate.Date- DateTime.UtcNow).Days;
     graphics.DrawString("Bike Rental Request Details", font, XBrushes.Black, new XPoint(20, 40));
     graphics.DrawString($"Request ID:{request.RequestId}", font, XBrushes.Black, new XPoint(20, 60));
     graphics.DrawString($"User Name: {user.FirstName} {user.LastName}", font, XBrushes.Black, new XPoint(20, 80));
@@ -350,6 +350,19 @@ public async  Task <bool> UpdateRequest(int id,RentalRequest rentRequest)
 
     return true;
   
+}
+
+public async Task <List<RentalRequest>>RequestByUser(int id)
+{
+    var user=await _bikeDbContext.Users.FirstOrDefaultAsync(r=>r.UserId== id);
+    if(user== null)
+    {
+        throw new Exception("No Such User!");
+    }
+
+    var request=await _bikeDbContext.RentalRequests.Where(r=>r.UserId == id).ToListAsync();
+    return request;
+
 }
 
 }

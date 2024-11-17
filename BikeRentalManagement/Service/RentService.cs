@@ -141,4 +141,15 @@ public class RentService:IRentService
     }
  }
 
+
+ public async   Task <List<RentalRequest>>RequestByUser(int id)
+ {
+    var data=await _rentRepository.RequestByUser(id);
+    if(data == null)
+    {
+        throw new Exception("No Data Found !");
+    }
+    return data;
+ }
+
 }

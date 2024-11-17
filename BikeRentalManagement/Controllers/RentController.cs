@@ -108,5 +108,19 @@ namespace BikeRentalManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet("RequestByUser{id}")]
+        public async Task <IActionResult>RequestByUser(int id)
+        {
+            try{
+                var data=await _rentservice.RequestByUser(id);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
