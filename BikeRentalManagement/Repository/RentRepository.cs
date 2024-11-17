@@ -39,7 +39,7 @@ public class RentRepository:IRentRepository
     {
 
         var data=await _bikeDbContext.RentalRequests
-                .Where(r=>r.RegistrationNumber==RegistrationNumber && r.Status.Equals("Pending")).ToListAsync();
+                .Where(r=>r.RegistrationNumber==RegistrationNumber && r.Status == Status.Pending).ToListAsync();
         foreach(var d in data)
         {
             if(d.FromDate < ToDate && d.ToDate > FromDate)
@@ -54,7 +54,7 @@ public class RentRepository:IRentRepository
     public async Task<List<BookedDatesResponseDTO>> GetBikeBookedDates(string registrationNumber)
     {
         var data=await _bikeDbContext.RentalRequests
-        .Where(r=>r.RegistrationNumber==registrationNumber && r.Status.Equals("Pending")).ToListAsync();
+        .Where(r=>r.RegistrationNumber==registrationNumber && r.Status == Status.Pending).ToListAsync();
 
         var date=new List<BookedDatesResponseDTO>();
         foreach(var d in data)
