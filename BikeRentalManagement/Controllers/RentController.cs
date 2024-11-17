@@ -95,5 +95,18 @@ namespace BikeRentalManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("UpdateRequest{id}")]
+        public async Task<IActionResult> UpdateRequest(int id,RentRequestDTO rentRequestDTO)
+        {
+            try{
+                var data=await _rentservice.UpdateRequest(id,rentRequestDTO);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

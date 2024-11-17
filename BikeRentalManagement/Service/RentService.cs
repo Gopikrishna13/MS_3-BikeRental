@@ -106,4 +106,39 @@ public class RentService:IRentService
     }
  }
 
+ public async  Task <bool> UpdateRequest(int id,RentRequestDTO rentRequestDTO)
+ {
+
+      var rentRequest=new RentalRequest
+        {
+            UserId=rentRequestDTO.UserId,
+            BikeId=rentRequestDTO.BikeId,
+            RegistrationNumber=rentRequestDTO.RegistrationNumber,
+            FromDate=rentRequestDTO.FromDate,
+            ToDate=rentRequestDTO.ToDate,
+            FromLocation=rentRequestDTO.FromLocation,
+            ToLocation=rentRequestDTO.ToLocation,
+            Distance=rentRequestDTO.Distance,
+            Amount=rentRequestDTO.Amount,
+            Status=rentRequestDTO.Status
+
+        };
+
+        var checkRequest=await _rentRepository.CheckRequest(rentRequestDTO.RegistrationNumber,rentRequestDTO.FromDate,rentRequestDTO.ToDate);
+
+        if(checkRequest)
+        {
+            throw new Exception("Already Booked!");
+        }
+
+    var data=await _rentRepository.UpdateRequest(id,rentRequest);
+
+    if(data)
+    {
+        return true;
+    }else{
+        return false;
+    }
+ }
+
 }

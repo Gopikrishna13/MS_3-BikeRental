@@ -9,6 +9,7 @@ using MailKit.Net.Smtp;
 using MimeKit;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
+using BikeRentalManagement.DTOs.RequestDTOs;
 
 namespace BikeRentalManagement.Repository;
 
@@ -223,7 +224,7 @@ private string GeneratePdf(RentalRequest request, User user)
     var graphics = XGraphics.FromPdfPage(page);
     var font = new XFont("Arial", 12, XFontStyle.Regular);
 
-  
+    request.Due=(request.ToDate- DateTime.UtcNow).Days;
     graphics.DrawString("Bike Rental Request Details", font, XBrushes.Black, new XPoint(20, 40));
     graphics.DrawString($"Request ID:{request.RequestId}", font, XBrushes.Black, new XPoint(20, 60));
     graphics.DrawString($"User Name: {user.FirstName} {user.LastName}", font, XBrushes.Black, new XPoint(20, 80));
@@ -237,8 +238,9 @@ private string GeneratePdf(RentalRequest request, User user)
     graphics.DrawString($"Amount: ${request.Amount}", font, XBrushes.Black, new XPoint(20, 400));
     graphics.DrawString($"Due: {request.Due}", font, XBrushes.Black, new XPoint(20, 440));
 
-
-    var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "RequestDetails.pdf");
+Random rn=new Random();
+var num=rn.Next();
+    var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), $"RequestDetails{request.RequestId+"_"+num}.pdf");
     pdf.Save(pdfPath);
 
     return pdfPath;
@@ -304,6 +306,50 @@ public async Task<bool>CancelRequest(int id)
     _bikeDbContext.Notifications.Add(notification); 
     await _bikeDbContext.SaveChangesAsync();
     return true;
+}
+
+
+public async  Task <bool> UpdateRequest(int id,RentalRequest rentRequest)
+{
+    var request=await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r=>r.RequestId == id);
+
+    if(request == null)
+    {
+        throw new Exception("No Such Request!");
+    }
+
+    request.UserId=rentRequest.UserId;
+    request.BikeId=rentRequest.BikeId;
+    request.RegistrationNumber=rentRequest.RegistrationNumber;
+    request.FromDate=rentRequest.FromDate;
+    request.ToDate=rentRequest.ToDate;
+    request.FromLocation=rentRequest.FromLocation;
+    request.Distance=rentRequest.Distance;
+    request.Due=0;
+    request.Amount=rentRequest.Amount;
+    request.Status=Status.Waiting;
+       await _bikeDbContext.SaveChangesAsync();
+      _bikeDbContext.Entry(request).State=EntityState.Modified;
+
+
+
+   
+
+    try
+    {
+        await _bikeDbContext.SaveChangesAsync();
+        _bikeDbContext.Entry(request).Reload();
+
+       
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+
+        throw ;
+    }
+
+    return true;
+  
 }
 
 }

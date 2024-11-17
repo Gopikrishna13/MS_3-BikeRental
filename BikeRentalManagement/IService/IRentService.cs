@@ -14,6 +14,8 @@ public interface IRentService
 
    Task<bool>AcceptRejectRequest(int id,int status);
    Task<bool>CancelRequest(int id);
+
+  Task <bool> UpdateRequest(int id,RentRequestDTO rentRequestDTO);
     
 
 }

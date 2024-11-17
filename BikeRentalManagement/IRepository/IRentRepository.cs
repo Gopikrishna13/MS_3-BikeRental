@@ -1,5 +1,6 @@
 using System;
 using BikeRentalManagement.Database.Entities;
+using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.DTOs.ResponseDTOs;
 
 namespace BikeRentalManagement.IRepository;
@@ -14,4 +15,6 @@ public interface IRentRepository
 
      Task<bool>AcceptRejectRequest(int id,int status);
      Task<bool>CancelRequest(int id);
+
+      Task <bool> UpdateRequest(int id,RentalRequest rentRequest);
 }
