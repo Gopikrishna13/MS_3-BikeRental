@@ -352,7 +352,7 @@ public async  Task <bool> UpdateRequest(int id,RentalRequest rentRequest)
   
 }
 
-public async Task <List<RentalRequest>>RequestByUser(int id)
+public async Task <List<RentalResponseDTO>>RequestByUser(int id)
 {
     var user=await _bikeDbContext.Users.FirstOrDefaultAsync(r=>r.UserId== id);
     if(user== null)
@@ -360,8 +360,24 @@ public async Task <List<RentalRequest>>RequestByUser(int id)
         throw new Exception("No Such User!");
     }
 
-    var request=await _bikeDbContext.RentalRequests.Where(r=>r.UserId == id).ToListAsync();
+    var request=await _bikeDbContext.RentalRequests.Where(r=>r.UserId == id) .Select(r => new RentalResponseDTO
+        {
+            
+            BikeId = r.BikeId,
+            RegistrationNumber = r.RegistrationNumber,
+            FromDate = r.FromDate,
+            ToDate = r.ToDate,
+            FromLocation = r.FromLocation,
+            ToLocation = r.ToLocation,
+            Distance = r.Distance,
+            Amount = r.Amount,
+            Due = r.Due,
+            Status = r.Status.ToString()
+        })
+        .ToListAsync();
+
     return request;
+ 
 
 }
 

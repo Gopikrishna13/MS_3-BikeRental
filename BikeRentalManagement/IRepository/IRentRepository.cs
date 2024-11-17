@@ -18,5 +18,5 @@ public interface IRentRepository
 
       Task <bool> UpdateRequest(int id,RentalRequest rentRequest);
 
-      Task <List<RentalRequest>>RequestByUser(int id);
+      Task <List<RentalResponseDTO>>RequestByUser(int id);
 }

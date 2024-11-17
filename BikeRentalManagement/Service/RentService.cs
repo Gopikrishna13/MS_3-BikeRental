@@ -142,7 +142,7 @@ public class RentService:IRentService
  }
 
 
- public async   Task <List<RentalRequest>>RequestByUser(int id)
+ public async   Task <List<RentalResponseDTO>>RequestByUser(int id)
  {
     var data=await _rentRepository.RequestByUser(id);
     if(data == null)

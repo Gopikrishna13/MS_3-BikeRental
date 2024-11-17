@@ -16,7 +16,7 @@ public interface IRentService
    Task<bool>CancelRequest(int id);
 
   Task <bool> UpdateRequest(int id,RentRequestDTO rentRequestDTO);
-  Task <List<RentalRequest>>RequestByUser(int id);
+  Task <List<RentalResponseDTO>>RequestByUser(int id);
     
 
 }
