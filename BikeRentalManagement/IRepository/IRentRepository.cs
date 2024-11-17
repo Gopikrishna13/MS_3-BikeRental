@@ -19,4 +19,6 @@ public interface IRentRepository
       Task <bool> UpdateRequest(int id,RentalRequest rentRequest);
 
       Task <List<RentalResponseDTO>>RequestByUser(int id);
+
+      Task <ICollection<object>>CountHistory(int id);
 }

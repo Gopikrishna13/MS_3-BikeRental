@@ -428,4 +428,27 @@ public async Task <List<RentalResponseDTO>>RequestByUser(int id)
 
 }
 
+
+public async Task <ICollection<object>>CountHistory(int id)
+{
+    var request=await _bikeDbContext.RentalRequests
+               .Where(r=>r.UserId == id ).ToListAsync();
+
+    var totalReq=request.Count();
+    var totalReturn=request.Where(r=>r.Status == Status.Returned).Count();
+    var totalPending=request.Where(r=>r.Status == Status.Pending).Count();
+    var totalLateReturn=request.Where(r=>r.Due < 0).Count();
+
+    var result = new List<object>
+    {
+        new { Label = "Total Requests", Value = totalReq },
+        new { Label = "Total Returned", Value = totalReturn },
+        new { Label = "Total Pending", Value = totalPending },
+        new { Label = "Total Late Returns", Value = totalLateReturn }
+    };
+
+    return result;
+
+}
+
 }

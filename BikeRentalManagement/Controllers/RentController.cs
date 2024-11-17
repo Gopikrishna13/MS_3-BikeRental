@@ -122,5 +122,21 @@ namespace BikeRentalManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("RentalHistoryCountByUser{id}")]
+        public async Task <IActionResult>CountHistory(int id)
+        {
+            try{
+
+                var data=await _rentservice.CountHistory(id);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+    
     }
 }

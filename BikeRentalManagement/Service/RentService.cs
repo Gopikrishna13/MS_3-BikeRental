@@ -142,7 +142,7 @@ public class RentService:IRentService
  }
 
 
- public async   Task <List<RentalResponseDTO>>RequestByUser(int id)
+ public async Task <List<RentalResponseDTO>>RequestByUser(int id)
  {
     var data=await _rentRepository.RequestByUser(id);
     if(data == null)
@@ -151,5 +151,16 @@ public class RentService:IRentService
     }
     return data;
  }
+
+public async Task <ICollection<object>>CountHistory(int id)
+{
+    var data=await _rentRepository.CountHistory(id);
+
+    if(data == null)
+    {
+        
+    }
+    return data;
+}
 
 }
