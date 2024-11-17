@@ -214,6 +214,53 @@ var pdfPath = GeneratePdf(request, getuser);
     _bikeDbContext.Notifications.Add(notification); 
             requeststatus= true;
         }
+
+        else if(status == 4)
+        {
+
+            request.Status=Status.Returned;
+
+    var emailMessage = new MimeMessage();
+    emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    emailMessage.To.Add(new MailboxAddress("", getuser.Email));
+    emailMessage.Subject = "Return Confirmation!";
+    emailMessage.Body = new TextPart("plain")
+    {
+        Text = $" {getuser.FirstName}\n Your Payment cleared for RequestID:{request.RequestId} .\n"
+    };
+
+    using (var client = new SmtpClient())
+    {
+        try
+        {
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;  
+        }
+    }
+
+    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.ReturnConfirmation);
+    if (email == null)
+    {
+        throw new Exception("Failed to get Email!");
+    }
+              var notification = new Notification
+    {
+        UserId = getuser.UserId,   
+        EmailId = email.EmailId,
+        Date = DateTime.UtcNow 
+    };
+
+  
+    _bikeDbContext.Notifications.Add(notification); 
+
+        }
          await _bikeDbContext.SaveChangesAsync();
         return requeststatus;
     }
