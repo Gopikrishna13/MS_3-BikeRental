@@ -40,7 +40,14 @@ builder.Services.AddScoped<IRentRepository,RentRepository>();
 builder.Services.AddScoped<IReportService,ReportService>();
 builder.Services.AddScoped<IReportRepository,ReportRepository>();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+      name: "CORSOpenPolicy",
+      builder => {
+          builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+      });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
@@ -49,6 +56,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();  // This enables the Swagger UI
 }
+app.UseCors("CORSOpenPolicy");
 
 app.UseHttpsRedirection();
 app.MapControllers();
