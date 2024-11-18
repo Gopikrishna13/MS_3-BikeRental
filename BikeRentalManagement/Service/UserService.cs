@@ -70,7 +70,12 @@ public UserService(IUserRepository userRepository)
 
      
         var data = await _userRepository.CreateUser(user);
-        return data;
+        if(data == true )
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
     catch (Exception ex)
     {

@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\images\\download.jpg",
+      "PackagePath": "staticwebassets\\images\\download.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BikeRentalManagement.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.BikeRentalManagement.props",
+      "PackagePath": "build\\BikeRentalManagement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.BikeRentalManagement.props",
+      "PackagePath": "buildMultiTargeting\\BikeRentalManagement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.BikeRentalManagement.props",
+      "PackagePath": "buildTransitive\\BikeRentalManagement.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

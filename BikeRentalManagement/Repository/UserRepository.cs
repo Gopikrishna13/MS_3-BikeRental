@@ -40,10 +40,14 @@ public async Task<bool> CreateUser(User user)
     await _bikeDbContext.SaveChangesAsync();
 
  
-  
+         if(data == null)
+        {
+            return false;
+        }
+        return true;
 
    
-    return true;
+   
 }
 
 public async Task<bool>UserRequest(int id,int status)

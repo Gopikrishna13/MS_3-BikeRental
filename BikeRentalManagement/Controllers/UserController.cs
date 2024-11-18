@@ -18,7 +18,7 @@ namespace BikeRentalManagement.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public async Task <IActionResult> CreateUser(UserRequestDTO userRequestDTO)
+        public async Task <IActionResult> CreateUser([FromForm]UserRequestDTO userRequestDTO)
         {
             try{
                 var data=await _userService.CreateUser(userRequestDTO);

@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "734mjbuj6ZSrZbKqbQEJ5IxTK8R8tpBGUyFSDjs+ZEg=",
+  "Hash": "1hhFSwudi/vahAgv7HaeQgd29v32lm7OojIfXTvj6dc=",
   "Source": "BikeRentalManagement",
   "BasePath": "_content/BikeRentalManagement",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "BikeRentalManagement\\wwwroot",
+      "Source": "BikeRentalManagement",
+      "ContentRoot": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\",
+      "BasePath": "_content/BikeRentalManagement",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\images\\download.jpg",
+      "SourceId": "BikeRentalManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\",
+      "BasePath": "_content/BikeRentalManagement",
+      "RelativePath": "images/download.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\download.jpg"
+    }
+  ]
 }

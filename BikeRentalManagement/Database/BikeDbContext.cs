@@ -27,6 +27,11 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .Property(u => u.Role)
         .HasConversion<string>();
 
+    modelBuilder.Entity<User>()
+        .Property(u=>u.Status)
+        .HasConversion<string>();
+
+        
     modelBuilder.Entity<Email>()
     .Property(u=>u.EmailType)
     .HasConversion<string>();
