@@ -17,4 +17,6 @@ Task <bool> UpdateUser(int Id,UserRequestDTO userRequestDTO);
 
 Task <string> Login(LoginRequestDTO loginrequest);
 Task <bool> AddEmail(Email mail);
+
+Task<bool>UserRequest(int id,int status);
 }

@@ -35,8 +35,8 @@ public class UserResponseDTO
     public Role Role { get; set; }
 
     [Required]
-    public byte[] LicenseImage { get; set; }
+    public string LicenseImage { get; set; }
 
     [Required]
-    public byte[] CameraCapture { get; set; }
+    public string CameraCapture { get; set; }
 }

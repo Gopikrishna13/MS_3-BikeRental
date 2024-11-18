@@ -30,6 +30,20 @@ namespace BikeRentalManagement.Controllers
             }
         }
 
+        [HttpPut("UserRequest{id}")]
+        public async Task<IActionResult>UserRequest(int id,int status)
+        {
+            try{
+                var data=await _userService.UserRequest(id,status);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+
         [HttpGet("AllUsers")]
         public async Task<IActionResult>AllUsers(int pagenumber,int pagesize)
         {

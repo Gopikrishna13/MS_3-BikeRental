@@ -4,6 +4,7 @@ using BikeRentalManagement.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BikeRentalManagement.Migrations
 {
     [DbContext(typeof(BikeDbContext))]
-    partial class BikeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118161941_user")]
+    partial class user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,8 +259,9 @@ namespace BikeRentalManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("CameraCapture")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("CameraCapture")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -271,8 +275,9 @@ namespace BikeRentalManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LicenseImage")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("LicenseImage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("LicenseNumber")
                         .IsRequired()

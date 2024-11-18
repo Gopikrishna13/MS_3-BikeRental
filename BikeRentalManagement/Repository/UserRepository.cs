@@ -40,13 +40,30 @@ public async Task<bool> CreateUser(User user)
     await _bikeDbContext.SaveChangesAsync();
 
  
+  
+
+   
+    return true;
+}
+
+public async Task<bool>UserRequest(int id,int status)
+{
+     var data=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.UserId == id);
+     if(data == null)
+     {
+        throw new Exception("No Such User!");
+     }
+
+     data.Status=Status.Accepted;
+     await _bikeDbContext.SaveChangesAsync();
+
     var emailMessage = new MimeMessage();
     emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
-    emailMessage.To.Add(new MailboxAddress("", user.Email));
+    emailMessage.To.Add(new MailboxAddress("", data.Email));
     emailMessage.Subject = "Activate Account!";
     emailMessage.Body = new TextPart("plain")
     {
-        Text = $"Welcome {user.FirstName}\n Thank you for registering on our site.\nYour Username: {user.Email}\nYour Password: {12345678}\nPlease update your password!"
+        Text = $"Welcome {data.FirstName}\n Thank you for registering on our site.\nYour Username: {data.Email}\nYour Password: {12345678}\nPlease update your password!"
     };
 
     using (var client = new SmtpClient())
@@ -74,7 +91,7 @@ public async Task<bool> CreateUser(User user)
    
     var notification = new Notification
     {
-        UserId = user.UserId,   
+        UserId = data.UserId,   
         EmailId = email.EmailId,
         Date = DateTime.UtcNow 
     };
@@ -82,15 +99,13 @@ public async Task<bool> CreateUser(User user)
   
     _bikeDbContext.Notifications.Add(notification);
 
-  Console.WriteLine(user.UserId+""+email.EmailId);
+  Console.WriteLine(data.UserId+""+email.EmailId);
     var result = await _bikeDbContext.SaveChangesAsync();
     _bikeDbContext.Entry(notification).Reload();
 
-   
     return result > 0;
+
 }
-
-
 
 
     public async Task<List<User>>AllUsers(int pagenumber,int pagesize)

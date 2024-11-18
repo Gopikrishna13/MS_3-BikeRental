@@ -33,10 +33,9 @@ public class UserRequestDTO
     [Required]
     public Role Role { get; set; }
 
-    [Required]
-    public string LicenseImage { get; set; }
+   public IFormFile LicenseImage { get; set; }
+    public IFormFile CameraCapture { get; set; }
 
-    [Required]
-    public string CameraCapture { get; set; }
+    public Status Status{get;set;} 
 
 }

@@ -18,33 +18,78 @@ public UserService(IUserRepository userRepository)
 {
     _userRepository=userRepository;
 }
-    public async Task <bool> CreateUser(UserRequestDTO userRequestDTO)
+  public async Task<bool> CreateUser(UserRequestDTO userRequestDTO)
+{
+    try
     {
+       
+        var imageDirectory = Path.Combine("wwwroot", "images");
+        if (!Directory.Exists(imageDirectory))
+        {
+            Directory.CreateDirectory(imageDirectory);
+        }
 
-        var user=new User {
-            FirstName=userRequestDTO.FirstName,
-            LastName=userRequestDTO.LastName,
-            Email=userRequestDTO.Email,
-            MobileNumber=userRequestDTO.MobileNumber,
-            NIC=userRequestDTO.NIC,
-            Password=userRequestDTO.Password,
-            LicenseNumber=userRequestDTO.LicenseNumber,
-            Role=userRequestDTO.Role,
-            LicenseImage=Convert.FromBase64String(userRequestDTO.LicenseImage),
-            CameraCapture=Convert.FromBase64String(userRequestDTO.CameraCapture)
+      
+        var imagePath = Path.Combine(imageDirectory, userRequestDTO.LicenseImage.FileName);
+        if (userRequestDTO.LicenseImage != null && userRequestDTO.LicenseImage.Length > 0)
+        {
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await userRequestDTO.LicenseImage.CopyToAsync(stream);
+            }
+        }
 
+       
+        var imagePathCam = Path.Combine(imageDirectory, userRequestDTO.CameraCapture.FileName);
+        if (userRequestDTO.CameraCapture != null && userRequestDTO.CameraCapture.Length > 0)
+        {
+            using (var stream = new FileStream(imagePathCam, FileMode.Create))
+            {
+                await userRequestDTO.CameraCapture.CopyToAsync(stream);
+            }
+        }
 
+     
+        var user = new User
+        {
+            FirstName = userRequestDTO.FirstName,
+            LastName = userRequestDTO.LastName,
+            Email = userRequestDTO.Email,
+            MobileNumber = userRequestDTO.MobileNumber,
+            NIC = userRequestDTO.NIC,
+            Password = userRequestDTO.Password,
+            LicenseNumber = userRequestDTO.LicenseNumber,
+            Role = userRequestDTO.Role,
+            LicenseImage = imagePath,
+            CameraCapture = imagePathCam,
+            Status = userRequestDTO.Status
         };
-  user.Password=BCrypt.Net.BCrypt.HashPassword(user.Password);
-    
-        var data=await _userRepository.CreateUser(user);
+
+        
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+     
+        var data = await _userRepository.CreateUser(user);
+        return data;
+    }
+    catch (Exception ex)
+    {
+   
+        Console.WriteLine(ex.Message);
+        return false;
+    }
+}
+
+
+    public async Task<bool>UserRequest(int id,int status)
+    {
+        var data=await _userRepository.UserRequest(id,status);
         if(data)
         {
             return true;
         }else{
             return false;
         }
-
     }
 
     public async Task<List<User>>AllUsers(int pagenumber,int pagesize)
@@ -58,31 +103,42 @@ public UserService(IUserRepository userRepository)
             return data;
         }
     }
-    public async Task <UserResponseDTO>UserById(int Id)
+public async Task<UserResponseDTO> UserById(int Id)
+{
+    try
     {
-
-        var user=await _userRepository.UserById(Id);
-
-        var response=new UserResponseDTO
-        {
-            UserId=user.UserId,
-            FirstName=user.FirstName,
-            LastName=user.LastName,
-            Email=user.Email,
-            MobileNumber=user.MobileNumber,
-            NIC=user.NIC,
-            LicenseNumber=user.LicenseNumber,
-            Role=user.Role,
-            LicenseImage=user.LicenseImage,
-            CameraCapture=user.CameraCapture
-
-
-        };
-        return response;
-
        
-        
+        var user = await _userRepository.UserById(Id);
+
+        if (user == null)
+        {
+            return null; 
+        }
+
+        var response = new UserResponseDTO
+        {
+            UserId = user.UserId,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            MobileNumber = user.MobileNumber,
+            NIC = user.NIC,
+            LicenseNumber = user.LicenseNumber,
+            Role = user.Role,
+            LicenseImage = user.LicenseImage,
+            CameraCapture = user.CameraCapture
+        };
+
+        return response;
     }
+    catch (Exception ex)
+    {
+        
+        Console.WriteLine(ex.Message);
+        return null;
+    }
+}
+
 
     public async Task <bool> DeleteById(int Id)
     {
@@ -91,27 +147,73 @@ public UserService(IUserRepository userRepository)
        return data;
     }
 
-    public async Task <bool> UpdateUser(int Id ,UserRequestDTO userRequestDTO)
+   public async Task<bool> UpdateUser(int Id, UserRequestDTO userRequestDTO)
+{
+    try
     {
+        
+        var existingUser = await _userRepository.UserById(Id);
+        if (existingUser == null)
+        {
+            return false; 
+        }
 
-         var user=new User {
-            FirstName=userRequestDTO.FirstName,
-            LastName=userRequestDTO.LastName,
-            Email=userRequestDTO.Email,
-            MobileNumber=userRequestDTO.MobileNumber,
-            NIC=userRequestDTO.NIC,
-            Password=userRequestDTO.Password,
-            LicenseNumber=userRequestDTO.LicenseNumber,
-            Role=userRequestDTO.Role,
-            LicenseImage=Convert.FromBase64String(userRequestDTO.LicenseImage),
-            CameraCapture=Convert.FromBase64String(userRequestDTO.CameraCapture)
+        var imageDirectory = Path.Combine("wwwroot", "images");
+        if (!Directory.Exists(imageDirectory))
+        {
+            Directory.CreateDirectory(imageDirectory);
+        }
 
+        string imagePath = existingUser.LicenseImage;
+        string imagePathCam = existingUser.CameraCapture;
 
+    
+        if (userRequestDTO.LicenseImage != null && userRequestDTO.LicenseImage.Length > 0)
+        {
+            imagePath = Path.Combine(imageDirectory, userRequestDTO.LicenseImage.FileName);
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await userRequestDTO.LicenseImage.CopyToAsync(stream);
+            }
+        }
+
+      
+        if (userRequestDTO.CameraCapture != null && userRequestDTO.CameraCapture.Length > 0)
+        {
+            imagePathCam = Path.Combine(imageDirectory, userRequestDTO.CameraCapture.FileName);
+            using (var stream = new FileStream(imagePathCam, FileMode.Create))
+            {
+                await userRequestDTO.CameraCapture.CopyToAsync(stream);
+            }
+        }
+
+     
+        var user = new User
+        {
+            UserId = Id,
+            FirstName = userRequestDTO.FirstName ?? existingUser.FirstName,
+            LastName = userRequestDTO.LastName ?? existingUser.LastName,
+            Email = userRequestDTO.Email ?? existingUser.Email,
+            MobileNumber = userRequestDTO.MobileNumber ?? existingUser.MobileNumber,
+            NIC = userRequestDTO.NIC ?? existingUser.NIC,
+            Password = userRequestDTO.Password,
+            LicenseNumber = userRequestDTO.LicenseNumber ?? existingUser.LicenseNumber,
+            Role = userRequestDTO.Role,
+            LicenseImage = imagePath,
+            CameraCapture = imagePathCam,
+            Status =  existingUser.Status
         };
-        var data=await _userRepository.UpdateUser(Id,user);
 
-       return data;
+      
+        var data = await _userRepository.UpdateUser(Id, user);
+        return data;
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        return false;
+    }
+}
 
     public async Task <string> Login(LoginRequestDTO loginrequest)
     {

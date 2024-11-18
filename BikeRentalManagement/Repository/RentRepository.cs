@@ -501,7 +501,7 @@ public async Task<bool> LateReturns()
         }
 
 
-        var emailTemplate = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
+        var emailTemplate = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.LateRentalAlert);
         if (emailTemplate == null)
         {
             Console.WriteLine("Failed to get Email ");

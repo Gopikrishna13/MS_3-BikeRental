@@ -9,6 +9,8 @@ public enum Status
     Pending,
     Returned,
 
-    Cancelled
+    Cancelled,
+
+    Accepted
 
 }
