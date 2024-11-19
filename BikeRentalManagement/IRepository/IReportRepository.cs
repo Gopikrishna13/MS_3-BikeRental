@@ -10,4 +10,6 @@ public interface IReportRepository
 Task<int> TotalBooked();
 
  Task <int>Revenue();
+
+ Task<object>GetRevenueByMonth();
 }

@@ -39,4 +39,15 @@ public class ReportRepository:IReportRepository
         return data;
      }
 
+     public async Task<object>GetRevenueByMonth()
+     {
+      var data=await _bikeDbContext.RentalRequests.ToListAsync();
+        var list =  from i in data
+    group i by i.ToDate.ToString("MMM") into grp
+    select new {Month = grp.Key, Count = grp.Sum(i => i.Amount)};
+
+    return list;
+
+     }
+
 }

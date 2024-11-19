@@ -66,5 +66,20 @@ namespace BikeRentalManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+         [HttpGet("GetRevenueByMonth")]
+         public async Task<IActionResult>GetRevenueByMonth()
+         {
+            try{
+                var data=await _reportService.GetRevenueByMonth();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+         }
+
     }
+   
 }

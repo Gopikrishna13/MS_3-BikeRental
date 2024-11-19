@@ -55,4 +55,15 @@ public async   Task <int>Revenue()
      }
      return data;
 }
+
+public async  Task<object>GetRevenueByMonth()
+{
+  var data=await _reportRepository.GetRevenueByMonth();
+   if(data == null)
+   {
+    return null;
+   }
+   return data;
+}
+
 }
