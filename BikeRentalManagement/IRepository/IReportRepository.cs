@@ -12,4 +12,6 @@ Task<int> TotalBooked();
  Task <int>Revenue();
 
  Task<object>GetRevenueByMonth();
+
+  Task<object>GetRevenueByBike();
 }

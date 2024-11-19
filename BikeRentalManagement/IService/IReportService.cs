@@ -12,5 +12,6 @@ public interface IReportService
     Task <int>Revenue();
 
     Task<object>GetRevenueByMonth();
+    Task<object>GetRevenueByBike();
 
 }

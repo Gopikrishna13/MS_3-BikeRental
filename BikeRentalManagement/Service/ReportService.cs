@@ -66,4 +66,14 @@ public async  Task<object>GetRevenueByMonth()
    return data;
 }
 
+public async  Task<object>GetRevenueByBike()
+{
+  var data=await _reportRepository.GetRevenueByBike();
+  if(data == null)
+  {
+    return null;
+  }
+  return data;
+}
+
 }

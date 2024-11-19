@@ -80,6 +80,19 @@ namespace BikeRentalManagement.Controllers
             }
          }
 
+         [HttpGet("GetRevenueByBike")]
+         public async Task <IActionResult>GetRevenueByBike()
+         {
+            try{
+                var data=await _reportService.GetRevenueByBike();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+         }
+
     }
    
 }
