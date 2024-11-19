@@ -37,14 +37,10 @@ public async Task<bool> CreateUser(User user)
     }
 
     var data = await _bikeDbContext.Users.AddAsync(user);
-    await _bikeDbContext.SaveChangesAsync();
+    var rows=await _bikeDbContext.SaveChangesAsync();
 
  
-         if(data == null)
-        {
-            return false;
-        }
-        return true;
+        return rows > 0;
 
    
    

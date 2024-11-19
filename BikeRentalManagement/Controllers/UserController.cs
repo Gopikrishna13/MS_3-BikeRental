@@ -17,18 +17,27 @@ namespace BikeRentalManagement.Controllers
                   _userService=userService;
         }
 
-        [HttpPost("CreateUser")]
-        public async Task <IActionResult> CreateUser([FromForm]UserRequestDTO userRequestDTO)
-        {
-            try{
-                var data=await _userService.CreateUser(userRequestDTO);
-                return Ok(data);
+      [HttpPost("CreateUser")]
+public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userRequestDTO)
+{
+    try
+    {
+        
 
-            }catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+       
+        var result = await _userService.CreateUser(userRequestDTO);
+
+      
+
+        return Ok(new { Success = result });
+    }
+    catch (Exception ex)
+    {
+       
+       
+        return BadRequest(new { Success = false, Error = ex.Message });
+    }
+}
 
         [HttpPut("UserRequest{id}")]
         public async Task<IActionResult>UserRequest(int id,int status)
