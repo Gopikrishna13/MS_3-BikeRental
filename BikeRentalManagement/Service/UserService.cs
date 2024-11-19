@@ -23,7 +23,7 @@ public UserService(IUserRepository userRepository)
     try
     {
        
-        var imageDirectory = Path.Combine("wwwroot", "images");
+        var imageDirectory = Path.Combine("wwwroot", $"images_{userRequestDTO.FirstName}");
         if (!Directory.Exists(imageDirectory))
         {
             Directory.CreateDirectory(imageDirectory);
