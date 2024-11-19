@@ -57,7 +57,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();  // This enables the Swagger UI
 }
 app.UseCors("CORSOpenPolicy");
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.MapControllers();
 

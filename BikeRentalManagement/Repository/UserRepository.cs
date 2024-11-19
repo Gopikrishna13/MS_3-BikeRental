@@ -53,7 +53,13 @@ public async Task<bool>UserRequest(int id,int status)
      {
         throw new Exception("No Such User!");
      }
-
+  
+   if(status!=6)
+   {
+    data.Status=Status.Rejected;
+    await _bikeDbContext.SaveChangesAsync();
+    return false;
+   }
      data.Status=Status.Accepted;
      await _bikeDbContext.SaveChangesAsync();
 
