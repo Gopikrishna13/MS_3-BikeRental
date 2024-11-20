@@ -223,32 +223,75 @@ public async Task <Bike>GetByRegNo(string RegNo)
     return data;
 }
 
-public async  Task <bool>UpdateBike(string RegistrationNumber,BikeUnit unit)
+public async Task<bool> UpdateBikeUnit(BikeUnitUpdateDTO bikeUnitUpdateDTO)
 {
-    var chkBike=await _bikerepository.CheckRegNo(RegistrationNumber);
+    var bike = await _bikerepository.GetByRegNo(bikeUnitUpdateDTO.RegistrationNumber);
 
-    if(chkBike == true)
+    if (bike == null )
     {
-        throw new Exception("No Such Bike!");
-
+        throw new Exception("Bike unit not found.");
     }
 
+  
+    var bikeUnit = bike.BikeUnits.FirstOrDefault(bu => bu.UnitId == bikeUnitUpdateDTO.UnitId);
 
-var updatebike=await _bikerepository.UpdateBike(RegistrationNumber,unit);
-if(updatebike)
-{
-return true;
-}
-else
-
-{
-    return false;
-}
-
-
+    if (bikeUnit == null)
+    {
+        throw new Exception("Bike unit not found.");
+    }
 
  
- }
+    bikeUnit.RegistrationNumber = bikeUnitUpdateDTO.RegistrationNumber;
+    bikeUnit.Year = bikeUnitUpdateDTO.Year;
+    bikeUnit.RentPerDay = bikeUnitUpdateDTO.RentPerDay;
 
+    var unitUpdated = await _bikerepository.UpdateBikeUnit(bikeUnit);
+
+    if (!unitUpdated)
+    {
+        throw new Exception("Failed to update bike unit.");
+    }
+
+ 
+    if (bikeUnitUpdateDTO.BikeImages != null && bikeUnitUpdateDTO.BikeImages.Any())
+    {
+        var imageDirectory = Path.Combine("wwwroot", "bike_images");
+        if (!Directory.Exists(imageDirectory))
+        {
+            Directory.CreateDirectory(imageDirectory);
+        }
+
+        var bikeImages = new List<BikeImages>();
+        foreach (var bikeImage in bikeUnitUpdateDTO.BikeImages)
+        {
+            if (bikeImage != null && bikeImage.Length > 0)
+            {
+                var uniqueFileName = $"{Guid.NewGuid()}_{bikeImage.FileName}";
+                var filePath = Path.Combine(imageDirectory, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await bikeImage.CopyToAsync(stream);
+                }
+
+                bikeImages.Add(new BikeImages
+                {
+                    UnitId = bikeUnitUpdateDTO.UnitId,
+                    Image = filePath
+                });
+            }
+        }
+
+        var imagesUpdated = await _bikerepository.UpdateBikeImages(bikeImages);
+        if (!imagesUpdated)
+        {
+            throw new Exception("Failed to update bike images.");
+        }
+    }
+
+    return true;
+}
+
+    
 }
 

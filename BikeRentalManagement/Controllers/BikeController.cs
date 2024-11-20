@@ -150,10 +150,10 @@ namespace BikeRentalManagement
        }
 
        [HttpPut("UpdateBike")]
-       public async Task <IActionResult>UpdateBike(string RegistrationNumber,BikeUnit unit)
+       public async Task <IActionResult>UpdateBikeUnit([FromForm]BikeUnitUpdateDTO unit)
        {
         try{
-            var data=await _bikeservice.UpdateBike(RegistrationNumber,unit);
+            var data=await _bikeservice.UpdateBikeUnit(unit);
             return Ok(data);
 
         }catch(Exception ex)

@@ -241,34 +241,44 @@ public async Task <Bike>GetByRegNo(string RegNo)
 
 }
 
-public async Task<bool>UpdateBike(string RegistrationNumber,BikeUnit unit)
-{
-    var existingBike=await _bikeDbContext.BikeUnits
-                    .Include(b=>b.bikeImages)
-                    .FirstOrDefaultAsync(b=>b.RegistrationNumber==RegistrationNumber);
+// public async Task<bool>UpdateBike(string RegistrationNumber,BikeUnit unit)
+// {
+//     var existingBike=await _bikeDbContext.BikeUnits
+//                     .Include(b=>b.bikeImages)
+//                     .FirstOrDefaultAsync(b=>b.RegistrationNumber==RegistrationNumber);
 
-    if(existingBike == null)
-    {
-        throw new Exception("Invalid");
-    }
+//     if(existingBike == null)
+//     {
+//         throw new Exception("Invalid");
+//     }
 
-    existingBike.RegistrationNumber=RegistrationNumber;
-    existingBike.Year=unit.Year;
-    existingBike.RentPerDay=unit.RentPerDay;
-    existingBike.bikeImages.Clear();
+//     existingBike.RegistrationNumber=RegistrationNumber;
+//     existingBike.Year=unit.Year;
+//     existingBike.RentPerDay=unit.RentPerDay;
+//     existingBike.bikeImages.Clear();
 
-    foreach (var bikeImg in unit.bikeImages)
-    {
-        existingBike.bikeImages.Add(new BikeImages
-        {
-            Image = bikeImg.Image
-        });
-    }
+//     foreach (var bikeImg in unit.bikeImages)
+//     {
+//         existingBike.bikeImages.Add(new BikeImages
+//         {
+//             Image = bikeImg.Image
+//         });
+//     }
 
   
-    await _bikeDbContext.SaveChangesAsync();
+//     await _bikeDbContext.SaveChangesAsync();
 
-    return true;
-}
+//     return true;
+// }
+  public async Task<bool> UpdateBikeUnit(BikeUnit bikeUnit)
+    {
+        _bikeDbContext.BikeUnits.Update(bikeUnit);
+        return await _bikeDbContext.SaveChangesAsync() > 0;
+    }
 
+    public async Task<bool> UpdateBikeImages(List<BikeImages> bikeImages)
+    {
+        _bikeDbContext.BikeImages.UpdateRange(bikeImages);
+        return await _bikeDbContext.SaveChangesAsync() > 0;
+    }
 }

@@ -29,6 +29,10 @@ Task<bool>checkRental(string RegistrationNumber);
 Task<bool>DeleteBike(string RegistrationNumber);
 Task <Bike>GetById(int id);
 Task <Bike>GetByRegNo(string RegNo);
-Task<bool>UpdateBike(string RegistrationNumber,BikeUnit unit);
+//Task<bool>UpdateBike(string RegistrationNumber,BikeUnit unit);
  Task <bool>AddBikeImages(BikeImages imageRequest);
+
+
+ Task<bool> UpdateBikeUnit(BikeUnit bikeUnit);
+ Task<bool> UpdateBikeImages(List<BikeImages> bikeImages);
 }

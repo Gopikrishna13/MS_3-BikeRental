@@ -26,6 +26,6 @@ public interface IBikeService
 
     Task <Bike>GetByRegNo(string RegNo);
 
-    Task <bool>UpdateBike(string RegistrationNumber,BikeUnit unit);
+    Task <bool>UpdateBikeUnit(BikeUnitUpdateDTO unit);
 
 }
