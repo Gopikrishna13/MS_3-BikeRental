@@ -1,6 +1,7 @@
 using System;
 using BikeRentalManagement.Database;
 using BikeRentalManagement.Database.Entities;
+using BikeRentalManagement.DTOs;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.Service;
@@ -97,36 +98,58 @@ public class BikeRepository:IBikeRepository
     return bikeId;
  }
 
-public async Task<int>AddModelBike(int modelId)
+public async Task<int> AddModelBike(int modelId)
 {
-    //can't add single value into a model
-     var newBike = new Bike
+    var newBike = new Bike
     {
         ModelId = modelId
     };
 
     await _bikeDbContext.Bikes.AddAsync(newBike);
     await _bikeDbContext.SaveChangesAsync();
+    Console.WriteLine($"New Bike Added: {newBike.BikeId}"); // Check BikeId after add
     return newBike.BikeId;
-
-    
 }
 
-public async Task<int>AddBikeUnit(BikeUnit unit)
 
+public async Task<int> AddBikeUnit(BikeUnit unit)
 {
-    await _bikeDbContext.BikeUnits.AddAsync(unit);
-    await _bikeDbContext.SaveChangesAsync();
+    Console.WriteLine("1 - Entered AddBikeUnit Method");
+    Console.WriteLine($"Adding Bike Unit: {unit.RegistrationNumber}, {unit.Year}, {unit.RentPerDay}");
+
+    try
+    {
+        await _bikeDbContext.BikeUnits.AddAsync(unit);
+        await _bikeDbContext.SaveChangesAsync();
+        Console.WriteLine($"Unit Added: {unit.UnitId}"); // Ensure unit is added
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error adding Bike Unit: {ex.Message}");
+        return -1; // Indicate failure if exception occurs
+    }
+
     return unit.UnitId;
-
 }
 
-public async Task <bool> AddBikeImages(List<BikeImages> bikeImages)
+
+
+public async Task<bool> AddBikeImages(BikeImages imageRequest)
 {
-    await _bikeDbContext.BikeImages.AddRangeAsync(bikeImages);
-    await _bikeDbContext.SaveChangesAsync();
-    return true;
+    if (imageRequest != null )
+    {
+        await _bikeDbContext.BikeImages.AddRangeAsync(imageRequest);
+        await _bikeDbContext.SaveChangesAsync();
+     
+        return true;
+    }
+    else
+    {
+        Console.WriteLine("No Images to Add");
+        return false;
+    }
 }
+
 
 
 public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)

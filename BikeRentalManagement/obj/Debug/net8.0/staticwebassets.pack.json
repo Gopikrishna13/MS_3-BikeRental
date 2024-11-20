@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\bike_images\\d6f38528-b851-409d-bc52-567da32c90a8_download.jpg",
+      "PackagePath": "staticwebassets\\bike_images\\d6f38528-b851-409d-bc52-567da32c90a8_download.jpg"
+    },
+    {
       "Id": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\images\\download.jpg",
       "PackagePath": "staticwebassets\\images\\download.jpg"
     },

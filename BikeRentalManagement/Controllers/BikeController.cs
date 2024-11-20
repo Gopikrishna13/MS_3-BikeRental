@@ -1,4 +1,5 @@
 using BikeRentalManagement.Database.Entities;
+using BikeRentalManagement.DTOs;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IService;
 using Microsoft.AspNetCore.Http;
@@ -71,10 +72,22 @@ namespace BikeRentalManagement
         }
 
         [HttpPost("AddBike")]
-        public async Task <IActionResult>AddBike(BikeRequestDTO bikeRequestDTO)
+        public async Task <IActionResult>AddBike([FromBody]BikeRequestDTO bikeRequestDTO)
         {
             try{
                 var data=await _bikeservice.AddBike(bikeRequestDTO);
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("UploadImages")]
+        public async Task <IActionResult>AddImages([FromForm]BikeImageRequestDTO imageRequestDTO)
+        {
+            try{
+                var data=await _bikeservice.AddImages(imageRequestDTO);
                 return Ok(data);
 
             }catch(Exception ex)

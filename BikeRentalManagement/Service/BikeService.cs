@@ -6,6 +6,10 @@ using BikeRentalManagement.IService;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Org.BouncyCastle.Bcpg.Attr;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using BikeRentalManagement.Migrations;
+using BikeRentalManagement.DTOs;
+using System.IO;
 
 
 namespace BikeRentalManagement.Service;
@@ -78,29 +82,38 @@ public class BikeService:IBikeService
     }
  }
 
-public async Task<bool> AddBike(BikeRequestDTO bikeRequestDTO)
+public async Task<bool> AddBike([FromForm] BikeRequestDTO bikeRequestDTO)
 {
-  
+    var imageDirectory = Path.Combine("wwwroot", "images_bike");
+    if (!Directory.Exists(imageDirectory))
+    {
+        Directory.CreateDirectory(imageDirectory);
+    }
+
+    if ( !bikeRequestDTO.BikeUnits.Any())
+    {
+        throw new Exception("Unit is empty.");
+    }
+
     foreach (var bikeUnit in bikeRequestDTO.BikeUnits)
     {
         var chkReg = await _bikerepository.CheckRegNo(bikeUnit.RegistrationNumber);
-        if (chkReg == false)
+        if (!chkReg)
         {
             throw new Exception("Registration Number Already Exists!");
         }
     }
 
-   
     var modelId = await _bikerepository.FindModelId(bikeRequestDTO.ModelName);
-  
-   var getbikeid = await _bikerepository.AddModelBike(modelId);
-   // var getbikeid = await _bikerepository.getbikeId();
-   
-    var bikeUnits = new List<BikeUnit>();
+    var getbikeid = await _bikerepository.AddModelBike(modelId);
+
+    if (getbikeid <= 0)
+    {
+        return false;
+    }
 
     foreach (var bikeUnt in bikeRequestDTO.BikeUnits)
     {
-      
         var unit = new BikeUnit
         {
             BikeId = getbikeid,
@@ -108,32 +121,55 @@ public async Task<bool> AddBike(BikeRequestDTO bikeRequestDTO)
             Year = bikeUnt.Year,
             RentPerDay = bikeUnt.RentPerDay
         };
-      
-        bikeUnits.Add(unit);
 
-    
-        await _bikerepository.AddBikeUnit(unit);
+        var unitId = await _bikerepository.AddBikeUnit(unit);
 
-
-        var bikeImages = new List<BikeImages>();
-
-       
-        foreach (var bikeImage in bikeUnt.bikeImages)
+        if (unitId <= 0)
         {
-            var image = new BikeImages
-            {
-                UnitId = unit.UnitId, 
-                Image = bikeImage.Image
-            };
-            bikeImages.Add(image);
+            return false;
         }
 
-       
-        await _bikerepository.AddBikeImages(bikeImages);
     }
 
     return true;
 }
+
+public async  Task <bool>AddImages([FromForm]BikeImageRequestDTO imageRequestDTO)
+{
+            if (imageRequestDTO.Image == null || imageRequestDTO.Image.Length == 0)
+        {
+            return false;
+        }
+         
+        var bikeImages = new List<BikeImages>();
+
+     
+        var imageDirectory = Path.Combine("wwwroot", "bike_images");
+        if (!Directory.Exists(imageDirectory))
+        {
+            Directory.CreateDirectory(imageDirectory);
+        }
+
+        var uniqueFileName = $"{Guid.NewGuid()}_{imageRequestDTO.Image.FileName}";
+        var filePath = Path.Combine(imageDirectory, uniqueFileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await imageRequestDTO.Image.CopyToAsync(stream);
+        }
+
+     
+        var image=new BikeImages
+        {
+            UnitId=imageRequestDTO.UnitId,
+            Image=filePath
+
+        };
+        await _bikerepository.AddBikeImages(image);
+        return true;
+
+}
+
 
 public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
 {

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "1hhFSwudi/vahAgv7HaeQgd29v32lm7OojIfXTvj6dc=",
+  "Hash": "ovmkCIG/PTiiq09yU7WMxU2z1RmqcvQORfpHZlUHTZU=",
   "Source": "BikeRentalManagement",
   "BasePath": "_content/BikeRentalManagement",
   "Mode": "Default",
@@ -16,6 +16,25 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\bike_images\\d6f38528-b851-409d-bc52-567da32c90a8_download.jpg",
+      "SourceId": "BikeRentalManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\",
+      "BasePath": "_content/BikeRentalManagement",
+      "RelativePath": "bike_images/d6f38528-b851-409d-bc52-567da32c90a8_download.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bike_images\\d6f38528-b851-409d-bc52-567da32c90a8_download.jpg"
+    },
     {
       "Identity": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\wwwroot\\images\\download.jpg",
       "SourceId": "BikeRentalManagement",

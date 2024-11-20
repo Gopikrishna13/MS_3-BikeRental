@@ -176,8 +176,8 @@ public async Task<UserResponseDTO> UserById(int Id)
             Directory.CreateDirectory(imageDirectory);
         }
 
-        string imagePath = existingUser.LicenseImage;
-        string imagePathCam = existingUser.CameraCapture;
+        string ?imagePath = existingUser.LicenseImage;
+        string? imagePathCam = existingUser.CameraCapture;
 
     
         if (userRequestDTO.LicenseImage != null && userRequestDTO.LicenseImage.Length > 0)
