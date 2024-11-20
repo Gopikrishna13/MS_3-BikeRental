@@ -5,6 +5,7 @@ using BikeRentalManagement.DTOs;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.Service;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -107,29 +108,28 @@ public async Task<int> AddModelBike(int modelId)
 
     await _bikeDbContext.Bikes.AddAsync(newBike);
     await _bikeDbContext.SaveChangesAsync();
-    Console.WriteLine($"New Bike Added: {newBike.BikeId}"); // Check BikeId after add
+   
     return newBike.BikeId;
 }
 
 
-public async Task<int> AddBikeUnit(BikeUnit unit)
+public async Task<bool> AddBikeUnit(BikeUnit unit)
 {
-    Console.WriteLine("1 - Entered AddBikeUnit Method");
-    Console.WriteLine($"Adding Bike Unit: {unit.RegistrationNumber}, {unit.Year}, {unit.RentPerDay}");
+ 
 
     try
     {
         await _bikeDbContext.BikeUnits.AddAsync(unit);
         await _bikeDbContext.SaveChangesAsync();
-        Console.WriteLine($"Unit Added: {unit.UnitId}"); // Ensure unit is added
+
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error adding Bike Unit: {ex.Message}");
-        return -1; // Indicate failure if exception occurs
+
+        return false; 
     }
 
-    return unit.UnitId;
+    return true;
 }
 
 

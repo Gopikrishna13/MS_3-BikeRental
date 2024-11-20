@@ -82,7 +82,7 @@ public class BikeService:IBikeService
     }
  }
 
-public async Task<bool> AddBike([FromForm] BikeRequestDTO bikeRequestDTO)
+public async Task<List<BikeUnit>> AddBike([FromBody] BikeRequestDTO bikeRequestDTO)
 {
     var imageDirectory = Path.Combine("wwwroot", "images_bike");
     if (!Directory.Exists(imageDirectory))
@@ -90,10 +90,7 @@ public async Task<bool> AddBike([FromForm] BikeRequestDTO bikeRequestDTO)
         Directory.CreateDirectory(imageDirectory);
     }
 
-    if ( !bikeRequestDTO.BikeUnits.Any())
-    {
-        throw new Exception("Unit is empty.");
-    }
+   
 
     foreach (var bikeUnit in bikeRequestDTO.BikeUnits)
     {
@@ -109,9 +106,10 @@ public async Task<bool> AddBike([FromForm] BikeRequestDTO bikeRequestDTO)
 
     if (getbikeid <= 0)
     {
-        return false;
+        throw new Exception("No ID!");
     }
 
+var bUnit=new  List<BikeUnit>();
     foreach (var bikeUnt in bikeRequestDTO.BikeUnits)
     {
         var unit = new BikeUnit
@@ -123,15 +121,17 @@ public async Task<bool> AddBike([FromForm] BikeRequestDTO bikeRequestDTO)
         };
 
         var unitId = await _bikerepository.AddBikeUnit(unit);
-
-        if (unitId <= 0)
-        {
-            return false;
-        }
-
+     if(!unitId)
+     {
+        throw new Exception("Failed To Add Unit!");
+     }
+       bUnit.Add(unit);
+        //id.Add(unitId);
     }
 
-    return true;
+   
+return bUnit;
+   
 }
 
 public async  Task <bool>AddImages([FromForm]BikeImageRequestDTO imageRequestDTO)
@@ -233,35 +233,15 @@ public async  Task <bool>UpdateBike(string RegistrationNumber,BikeUnit unit)
 
     }
 
-//          var bikeImages = new List<BikeImages>();
-
-//     var bikeunit=new BikeUnit{
-//         Year=unit.Year,
-//         RentPerDay=unit.RentPerDay,
-//         bikeImages=bikeImages
-
-        
-   
-// };
-       
-//         foreach (var bikeImage in unit.bikeImages)
-//         {
-//             var image = new BikeImages
-//             {
-                
-//                 Image = bikeImage.Image
-//             };
-//             bikeImages.Add(image);
-
-
-//         };
-
 
 var updatebike=await _bikerepository.UpdateBike(RegistrationNumber,unit);
 if(updatebike)
 {
 return true;
-}else{
+}
+else
+
+{
     return false;
 }
 

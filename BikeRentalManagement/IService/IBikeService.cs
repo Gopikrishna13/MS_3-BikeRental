@@ -15,7 +15,7 @@ public interface IBikeService
 
     Task <List<Brand>> GetAllModels();
 
-    Task <bool>AddBike(BikeRequestDTO bikeRequestDTO);
+    Task <List<BikeUnit>>AddBike(BikeRequestDTO bikeRequestDTO);
     Task <bool>AddImages(BikeImageRequestDTO imageRequestDTO);
 
     Task<List<Bike>>AllBikes(int pagenumber,int pagesize);

@@ -22,7 +22,7 @@ public interface IBikeRepository
  //Task<int>getbikeId();
 
 //Task <bool>AddBikeImages(List<BikeImages> bikeImages);
-Task <int>AddBikeUnit(BikeUnit unit);
+Task <bool>AddBikeUnit(BikeUnit unit);
 Task <int> AddModelBike(int modelId);
 Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
 Task<bool>checkRental(string RegistrationNumber);
