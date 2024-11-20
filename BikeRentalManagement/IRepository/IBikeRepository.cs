@@ -35,4 +35,5 @@ Task <Bike>GetByRegNo(string RegNo);
 
  Task<bool> UpdateBikeUnit(BikeUnit bikeUnit);
  Task<bool> UpdateBikeImages(List<BikeImages> bikeImages);
+ Task <List<Model>>GetModelByBrand(int id);
 }

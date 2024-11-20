@@ -291,7 +291,15 @@ public async Task<bool> UpdateBikeUnit(BikeUnitUpdateDTO bikeUnitUpdateDTO)
 
     return true;
 }
-
+ public async  Task <List<Model>>GetModelByBrand(int id)
+ {
+    var data=await _bikerepository.GetModelByBrand(id);
+    if(data == null)
+    {
+        throw new Exception("No Data!");
+    }
+    return data;
+ }
     
 }
 

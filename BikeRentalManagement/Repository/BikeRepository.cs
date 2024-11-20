@@ -281,4 +281,10 @@ public async Task <Bike>GetByRegNo(string RegNo)
         _bikeDbContext.BikeImages.UpdateRange(bikeImages);
         return await _bikeDbContext.SaveChangesAsync() > 0;
     }
+
+    public async Task <List<Model>>GetModelByBrand(int id)
+    {
+        var data=await _bikeDbContext.Models.Where(m=>m.BrandId==id).ToListAsync();
+        return data;
+    }
 }

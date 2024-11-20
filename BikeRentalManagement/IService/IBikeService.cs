@@ -28,4 +28,6 @@ public interface IBikeService
 
     Task <bool>UpdateBikeUnit(BikeUnitUpdateDTO unit);
 
+    Task <List<Model>>GetModelByBrand(int id);
+
 }
