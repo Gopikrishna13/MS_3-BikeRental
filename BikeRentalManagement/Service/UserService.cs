@@ -105,6 +105,13 @@ public UserService(IUserRepository userRepository)
         {
             throw new Exception("No Data Exists!");
         }else{
+            foreach(var d in data)
+            {
+                d.LicenseImage=d.LicenseImage?.Replace("wwwroot","");
+                d.LicenseImage=d.LicenseImage?.Replace("\\","/");
+                d.CameraCapture=d.CameraCapture?.Replace("wwwroot","");
+                d.CameraCapture=d.CameraCapture?.Replace("\\","/");
+            }
             return data;
         }
     }
