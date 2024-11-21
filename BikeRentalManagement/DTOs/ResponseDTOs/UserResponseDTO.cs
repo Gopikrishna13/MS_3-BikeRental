@@ -22,21 +22,20 @@ public class UserResponseDTO
     [Phone]
     public string MobileNumber { get; set; }
 
-    [Required]
+ 
     public string NIC { get; set; }
 
     // [Required]
     // public string Password { get; set; }
 
-    [Required]
+ 
     public string LicenseNumber { get; set; }
 
-    [Required]
-    public Role Role { get; set; }
+    public string Password{get;set;}
 
-    [Required]
+ 
     public string LicenseImage { get; set; }
 
-    [Required]
+
     public string CameraCapture { get; set; }
 }

@@ -136,7 +136,7 @@ public async Task<UserResponseDTO> UserById(int Id)
             MobileNumber = user.MobileNumber,
             NIC = user.NIC,
             LicenseNumber = user.LicenseNumber,
-            Role = user.Role,
+            Password=user.Password,
             LicenseImage = user.LicenseImage,
             CameraCapture = user.CameraCapture
         };
