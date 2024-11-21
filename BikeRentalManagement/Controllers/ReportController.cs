@@ -106,18 +106,18 @@ namespace BikeRentalManagement.Controllers
             }
          }
 
-        //  [HttpGet("UserHistory")]
-        //  public async Task <IActionResult>UserHistory()
-        //  {
-        //     try{
-        //         var data=await _reportService.UserHistory();
-        //         return Ok(data);
+         [HttpGet("UserHistory")]
+         public async Task <IActionResult>UserHistory()
+         {
+            try{
+                var data=await _reportService.UserHistory();
+                return Ok(data);
 
-        //     }catch(Exception ex)
-        //     {
-        //         return BadRequest(ex.Message);
-        //     }
-        //  }
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+         }
 
     }
    

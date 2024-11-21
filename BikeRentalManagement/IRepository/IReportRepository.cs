@@ -17,5 +17,5 @@ Task<int> TotalBooked();
 
    Task<object>InventoryManagement();
 
-   //Task <object>UserHistory();
+   Task <ICollection<object>>UserHistory();
 }

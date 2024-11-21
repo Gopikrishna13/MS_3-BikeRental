@@ -15,6 +15,6 @@ public interface IReportService
     Task<object>GetRevenueByBike();
 
     Task<object>InventoryManagement();
-    //Task <object>UserHistory();
+    Task <ICollection<object>>UserHistory();
 
 }

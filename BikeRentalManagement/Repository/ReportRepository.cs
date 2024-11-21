@@ -84,8 +84,37 @@ public async Task<object> InventoryManagement()
     return data;
 }
  
+public async Task<ICollection<object>> UserHistory()
+{
+    var users = await _bikeDbContext.Users.ToListAsync();
+    
+    var result = new List<object>();
 
+    foreach (var user in users)
+    {
+        
+        var requests = await _bikeDbContext.RentalRequests
+            .Where(r => r.UserId == user.UserId)
+            .ToListAsync();
 
+        var totalReq = requests.Count();
+        var totalReturn = requests.Where(r => r.Status == Status.Returned).Count();
+        var totalPending = requests.Where(r => r.Status == Status.Pending).Count();
+        var totalLateReturn = requests.Where(r => r.Due < 0).Count();
+
+        result.Add(new 
+        {
+            UserId = user.UserId,
+            UserName = user.FirstName,  
+            TotalRequests = totalReq,
+            TotalReturned = totalReturn,
+            TotalPending = totalPending,
+            TotalLateReturns = totalLateReturn
+        });
+    }
+
+    return result;
+}
 
    
 }
