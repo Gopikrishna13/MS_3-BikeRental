@@ -67,5 +67,25 @@ public class ReportRepository:IReportRepository
     return data;
 }
 
+public async Task<object> InventoryManagement()
+{
+    var data = await (
+        from bikeunit in _bikeDbContext.BikeUnits
+        join rental in _bikeDbContext.RentalRequests
+            on bikeunit.RegistrationNumber equals rental.RegistrationNumber into rentalGroup
+        from rental in rentalGroup.DefaultIfEmpty()  
+        select new
+        {
+            RegistrationNumber = bikeunit.RegistrationNumber,
+            Status =  rental.Status == Status.Pending ? "Pending" : "Available"  
+        }
+    ).ToListAsync();
+
+    return data;
+}
+ 
+
+
+
    
 }

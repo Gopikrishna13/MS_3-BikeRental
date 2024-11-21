@@ -14,4 +14,8 @@ Task<int> TotalBooked();
  Task<object>GetRevenueByMonth();
 
   Task<object>GetRevenueByBike();
+
+   Task<object>InventoryManagement();
+
+   //Task <object>UserHistory();
 }

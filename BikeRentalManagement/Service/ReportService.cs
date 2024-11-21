@@ -75,5 +75,25 @@ public async  Task<object>GetRevenueByBike()
   }
   return data;
 }
+public async Task<object>InventoryManagement()
+{
+  var data=await _reportRepository.InventoryManagement();
+    if(data == null)
+  {
+    return null;
+  }
+  return data;
+}
+
+// public async   Task <object>UserHistory()
+// {
+//    var data=await _reportRepository.UserHistory();
+//     if(data == null)
+//   {
+//     return null;
+//   }
+//   return data;
+
+// }
 
 }

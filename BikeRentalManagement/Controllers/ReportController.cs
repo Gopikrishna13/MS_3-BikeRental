@@ -93,6 +93,32 @@ namespace BikeRentalManagement.Controllers
             }
          }
 
+         [HttpGet("InventoryManagement")]
+         public async Task<IActionResult>InventoryManagement()
+         {
+            try{
+                var data=await _reportService.InventoryManagement();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+         }
+
+        //  [HttpGet("UserHistory")]
+        //  public async Task <IActionResult>UserHistory()
+        //  {
+        //     try{
+        //         var data=await _reportService.UserHistory();
+        //         return Ok(data);
+
+        //     }catch(Exception ex)
+        //     {
+        //         return BadRequest(ex.Message);
+        //     }
+        //  }
+
     }
    
 }
