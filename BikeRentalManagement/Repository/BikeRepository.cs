@@ -155,14 +155,16 @@ public async Task<bool> AddBikeImages(BikeImages imageRequest)
 
 public async Task<List<BikeResponseDTO>> AllBikes(int pageNumber, int pageSize)
 {
-    // Calculate skip count for pagination
+   
     int skip = (pageNumber - 1) * pageSize;
 
    
     var data = await _bikeDbContext.Bikes
         .Include(b => b.BikeUnits)
-            .ThenInclude(bi => bi.bikeImages) 
+        .ThenInclude(bi => bi.bikeImages) 
         .Include(m => m.Model) 
+        .ThenInclude(b=>b.Brand)
+        
         .Skip(skip)
         .Take(pageSize)
         .ToListAsync();
@@ -170,6 +172,7 @@ public async Task<List<BikeResponseDTO>> AllBikes(int pageNumber, int pageSize)
 
     var response = data.Select(bike => new BikeResponseDTO
     {
+        BrandName=bike.Model?.Brand.BrandName,
         ModelName = bike.Model?.ModelName, 
         BikeUnits = bike.BikeUnits.Select(unit => new BikeUnit
         {
