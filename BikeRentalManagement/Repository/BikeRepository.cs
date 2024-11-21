@@ -3,6 +3,7 @@ using BikeRentalManagement.Database;
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs;
 using BikeRentalManagement.DTOs.RequestDTOs;
+using BikeRentalManagement.DTOs.ResponseDTOs;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.Service;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -152,25 +153,36 @@ public async Task<bool> AddBikeImages(BikeImages imageRequest)
 
 
 
-public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
+public async Task<List<BikeResponseDTO>> AllBikes(int pageNumber, int pageSize)
 {
+    // Calculate skip count for pagination
+    int skip = (pageNumber - 1) * pageSize;
+
    
-       
+    var data = await _bikeDbContext.Bikes
+        .Include(b => b.BikeUnits)
+            .ThenInclude(bi => bi.bikeImages) 
+        .Include(m => m.Model) 
+        .Skip(skip)
+        .Take(pageSize)
+        .ToListAsync();
 
 
+    var response = data.Select(bike => new BikeResponseDTO
+    {
+        ModelName = bike.Model?.ModelName, 
+        BikeUnits = bike.BikeUnits.Select(unit => new BikeUnit
+        {
+            UnitId = unit.UnitId,
+            BikeId = unit.BikeId,
+            RegistrationNumber = unit.RegistrationNumber,
+            Year = unit.Year,
+            RentPerDay = unit.RentPerDay,
+            bikeImages = unit.bikeImages.ToList()
+        }).ToList()
+    }).ToList();
 
-             int skip=(pagenumber-1)* pagesize;
-             var data= await _bikeDbContext.Bikes
-             .Include(b=>b.BikeUnits)
-             .ThenInclude(bi=>bi.bikeImages)
-             .Skip(skip).Take(pagesize)
-             .ToListAsync();
-      
-
-             return data;
-
-
-
+    return response;
 }
 
 public async Task<bool>DeleteBike(string RegistrationNumber)

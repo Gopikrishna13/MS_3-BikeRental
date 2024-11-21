@@ -2,6 +2,7 @@ using System;
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs;
 using BikeRentalManagement.DTOs.RequestDTOs;
+using BikeRentalManagement.DTOs.ResponseDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeRentalManagement.IService;
@@ -18,7 +19,7 @@ public interface IBikeService
     Task <List<BikeUnit>>AddBike(BikeRequestDTO bikeRequestDTO);
     Task <bool>AddImages(BikeImageRequestDTO imageRequestDTO);
 
-    Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
+    Task<List<BikeResponseDTO>>AllBikes(int pagenumber,int pagesize);
 
     Task <bool>DeleteBike(string RegistrationNumber);
 

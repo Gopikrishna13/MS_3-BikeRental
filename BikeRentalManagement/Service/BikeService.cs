@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using BikeRentalManagement.Migrations;
 using BikeRentalManagement.DTOs;
 using System.IO;
+using BikeRentalManagement.DTOs.ResponseDTOs;
 
 
 namespace BikeRentalManagement.Service;
@@ -158,7 +159,7 @@ public async  Task <bool>AddImages([FromForm]BikeImageRequestDTO imageRequestDTO
             await imageRequestDTO.Image.CopyToAsync(stream);
         }
 
-     
+    
         var image=new BikeImages
         {
             UnitId=imageRequestDTO.UnitId,
@@ -171,7 +172,7 @@ public async  Task <bool>AddImages([FromForm]BikeImageRequestDTO imageRequestDTO
 }
 
 
-public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
+public async Task<List<BikeResponseDTO>>AllBikes(int pagenumber,int pagesize)
 {
     var data=await _bikerepository.AllBikes(pagenumber,pagesize);
 
@@ -179,6 +180,18 @@ public async Task<List<Bike>>AllBikes(int pagenumber,int pagesize)
     {
         throw new Exception("Data Not Found!");
         
+    }
+    foreach(var d in data)
+    {
+        foreach(var u in d.BikeUnits)
+        {
+            foreach(var i in u.bikeImages)
+            {
+                i.Image=i.Image?.Replace("wwwroot","");
+                i.Image=i.Image?.Replace("\\","");
+                i.Image=i.Image?.Replace("bike_images","bike_images/");
+            }
+        }
     }
     return data;
 }

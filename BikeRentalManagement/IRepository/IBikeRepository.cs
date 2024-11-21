@@ -2,6 +2,7 @@ using System;
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs;
 using BikeRentalManagement.DTOs.RequestDTOs;
+using BikeRentalManagement.DTOs.ResponseDTOs;
 
 namespace BikeRentalManagement.IRepository;
 
@@ -24,7 +25,7 @@ public interface IBikeRepository
 //Task <bool>AddBikeImages(List<BikeImages> bikeImages);
 Task <bool>AddBikeUnit(BikeUnit unit);
 Task <int> AddModelBike(int modelId);
-Task<List<Bike>>AllBikes(int pagenumber,int pagesize);
+Task<List<BikeResponseDTO>>AllBikes(int pagenumber,int pagesize);
 Task<bool>checkRental(string RegistrationNumber);
 Task<bool>DeleteBike(string RegistrationNumber);
 Task <Bike>GetById(int id);
