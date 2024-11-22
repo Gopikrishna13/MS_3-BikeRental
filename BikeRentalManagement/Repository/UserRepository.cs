@@ -176,6 +176,7 @@ public async Task<bool> UpdateUser(int Id, User user)
     existingUser.NIC = user.NIC;
     existingUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
     existingUser.LicenseNumber = user.LicenseNumber;
+    //
     existingUser.Role = user.Role;
     existingUser.LicenseImage = user.LicenseImage;
     existingUser.CameraCapture = user.CameraCapture;

@@ -94,10 +94,10 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
         }
 
         [HttpPut("UpdateUser")]
-        public async Task <IActionResult> UpdateUser(int Id,UserRequestDTO userRequestDTO)
+        public async Task <IActionResult> UpdateUser(int Id,UserUpdateRequestDTO userupdate)
         {
             try{
-                var data=await _userService.UpdateUser(Id,userRequestDTO);
+                var data=await _userService.UpdateUser(Id,userupdate);
                 return Ok(data);
 
             }catch(Exception ex)

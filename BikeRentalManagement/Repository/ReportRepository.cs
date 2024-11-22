@@ -45,7 +45,7 @@ public class ReportRepository:IReportRepository
       
         var list =  from i in data
     group i by i.ToDate.ToString("MMM") into grp
-    select new {Month = grp.Key, Count = grp.Sum(i => i.Amount)};
+    select new {Month = grp.Key, Revenue = grp.Sum(i => i.Amount)};
 
     return list;
 

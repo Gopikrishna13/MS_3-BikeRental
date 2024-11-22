@@ -159,7 +159,7 @@ public async Task<UserResponseDTO> UserById(int Id)
        return data;
     }
 
-   public async Task<bool> UpdateUser(int Id, UserRequestDTO userRequestDTO)
+   public async Task<bool> UpdateUser(int Id,UserUpdateRequestDTO userupdate)
 {
     try
     {
@@ -170,49 +170,49 @@ public async Task<UserResponseDTO> UserById(int Id)
             return false; 
         }
 
-        var imageDirectory = Path.Combine("wwwroot", "images");
-        if (!Directory.Exists(imageDirectory))
-        {
-            Directory.CreateDirectory(imageDirectory);
-        }
+        // var imageDirectory = Path.Combine("wwwroot", "images");
+        // if (!Directory.Exists(imageDirectory))
+        // {
+        //     Directory.CreateDirectory(imageDirectory);
+        // }
 
-        string ?imagePath = existingUser.LicenseImage;
-        string? imagePathCam = existingUser.CameraCapture;
+        // string ?imagePath = existingUser.LicenseImage;
+        // string? imagePathCam = existingUser.CameraCapture;
 
     
-        if (userRequestDTO.LicenseImage != null && userRequestDTO.LicenseImage.Length > 0)
-        {
-            imagePath = Path.Combine(imageDirectory, userRequestDTO.LicenseImage.FileName);
-            using (var stream = new FileStream(imagePath, FileMode.Create))
-            {
-                await userRequestDTO.LicenseImage.CopyToAsync(stream);
-            }
-        }
+        // if (userRequestDTO.LicenseImage != null && userRequestDTO.LicenseImage.Length > 0)
+        // {
+        //     imagePath = Path.Combine(imageDirectory, userRequestDTO.LicenseImage.FileName);
+        //     using (var stream = new FileStream(imagePath, FileMode.Create))
+        //     {
+        //         await userRequestDTO.LicenseImage.CopyToAsync(stream);
+        //     }
+        // }
 
       
-        if (userRequestDTO.CameraCapture != null && userRequestDTO.CameraCapture.Length > 0)
-        {
-            imagePathCam = Path.Combine(imageDirectory, userRequestDTO.CameraCapture.FileName);
-            using (var stream = new FileStream(imagePathCam, FileMode.Create))
-            {
-                await userRequestDTO.CameraCapture.CopyToAsync(stream);
-            }
-        }
+        // if (userRequestDTO.CameraCapture != null && userRequestDTO.CameraCapture.Length > 0)
+        // {
+        //     imagePathCam = Path.Combine(imageDirectory, userRequestDTO.CameraCapture.FileName);
+        //     using (var stream = new FileStream(imagePathCam, FileMode.Create))
+        //     {
+        //         await userRequestDTO.CameraCapture.CopyToAsync(stream);
+        //     }
+        // }
 
      
         var user = new User
         {
             UserId = Id,
-            FirstName = userRequestDTO.FirstName ?? existingUser.FirstName,
-            LastName = userRequestDTO.LastName ?? existingUser.LastName,
-            Email = userRequestDTO.Email ?? existingUser.Email,
-            MobileNumber = userRequestDTO.MobileNumber ?? existingUser.MobileNumber,
-            NIC = userRequestDTO.NIC ?? existingUser.NIC,
-            Password = userRequestDTO.Password,
-            LicenseNumber = userRequestDTO.LicenseNumber ?? existingUser.LicenseNumber,
-            Role = userRequestDTO.Role,
-            LicenseImage = imagePath,
-            CameraCapture = imagePathCam,
+            FirstName = userupdate.FirstName ?? existingUser.FirstName,
+            LastName = userupdate.LastName ?? existingUser.LastName,
+            Email = userupdate.Email ?? existingUser.Email,
+            MobileNumber = userupdate.MobileNumber ?? existingUser.MobileNumber,
+            NIC = userupdate.NIC ?? existingUser.NIC,
+            Password = userupdate.Password??existingUser.Password,
+            LicenseNumber = userupdate.LicenseNumber ?? existingUser.LicenseNumber,
+            Role = existingUser.Role,
+            LicenseImage = existingUser.LicenseImage,
+            CameraCapture = existingUser.CameraCapture,
             Status =  existingUser.Status
         };
 

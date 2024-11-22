@@ -155,38 +155,39 @@ public async Task<bool> AddBikeImages(BikeImages imageRequest)
 
 public async Task<List<BikeResponseDTO>> AllBikes(int pageNumber, int pageSize)
 {
-   
     int skip = (pageNumber - 1) * pageSize;
 
-   
     var data = await _bikeDbContext.Bikes
         .Include(b => b.BikeUnits)
-        .ThenInclude(bi => bi.bikeImages) 
-        .Include(m => m.Model) 
-        .ThenInclude(b=>b.Brand)
-        
+        .ThenInclude(bi => bi.bikeImages)
+        .Include(m => m.Model)
+        .ThenInclude(b => b.Brand)
         .Skip(skip)
         .Take(pageSize)
         .ToListAsync();
 
 
-    var response = data.Select(bike => new BikeResponseDTO
-    {
-        BrandName=bike.Model?.Brand.BrandName,
-        ModelName = bike.Model?.ModelName, 
-        BikeUnits = bike.BikeUnits.Select(unit => new BikeUnit
+    var response = data
+        .Where(bike => bike.BikeUnits.Count > 0) 
+        .Select(bike => new BikeResponseDTO
         {
-            UnitId = unit.UnitId,
-            BikeId = unit.BikeId,
-            RegistrationNumber = unit.RegistrationNumber,
-            Year = unit.Year,
-            RentPerDay = unit.RentPerDay,
-            bikeImages = unit.bikeImages.ToList()
-        }).ToList()
-    }).ToList();
+            BrandName = bike.Model?.Brand.BrandName,
+            ModelName = bike.Model?.ModelName,
+            BikeUnits = bike.BikeUnits
+                .Select(unit => new BikeUnit
+                {
+                    UnitId = unit.UnitId,
+                    BikeId = unit.BikeId,
+                    RegistrationNumber = unit.RegistrationNumber,
+                    Year = unit.Year,
+                    RentPerDay = unit.RentPerDay,
+                    bikeImages = unit.bikeImages.ToList()
+                }).ToList()
+        }).ToList();
 
     return response;
 }
+
 
 public async Task<bool>DeleteBike(string RegistrationNumber)
 {

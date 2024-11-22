@@ -12,7 +12,7 @@ Task<List<User>>AllUsers(int pagenumber,int pagesize);
 Task <UserResponseDTO>UserById(int Id);
 Task <bool> DeleteById(int Id);
 
-Task <bool> UpdateUser(int Id,UserRequestDTO userRequestDTO);
+Task <bool> UpdateUser(int Id,UserUpdateRequestDTO userupdate);
 
 
 Task <string> Login(LoginRequestDTO loginrequest);
