@@ -292,9 +292,16 @@ public async Task <Bike>GetByRegNo(string RegNo)
         return await _bikeDbContext.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> UpdateBikeImages(List<BikeImages> bikeImages)
+    public async Task<bool> UpdateBikeImages(int unitId,List<BikeImages> bikeImages)
     {
-        _bikeDbContext.BikeImages.UpdateRange(bikeImages);
+        var findImage=await _bikeDbContext.BikeImages.Where(i=>i.UnitId == unitId).ToListAsync();
+
+        if(findImage != null)
+        {
+            _bikeDbContext.BikeImages.RemoveRange(findImage);
+             _bikeDbContext.BikeImages.UpdateRange(bikeImages);
+        }
+     
         return await _bikeDbContext.SaveChangesAsync() > 0;
     }
 

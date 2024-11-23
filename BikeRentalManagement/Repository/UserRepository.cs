@@ -54,10 +54,55 @@ public async Task<bool>UserRequest(int id,int status)
         throw new Exception("No Such User!");
      }
   
-   if(status!=6)
+   if(status==5)
    {
     data.Status=Status.Rejected;
     await _bikeDbContext.SaveChangesAsync();
+     var emailMessageRej = new MimeMessage();
+    emailMessageRej.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    emailMessageRej.To.Add(new MailboxAddress("", data.Email));
+    emailMessageRej.Subject = "Request Reject!";
+    emailMessageRej.Body = new TextPart("plain")
+    {
+        Text = $" {data.FirstName}\n Your Request has been rejected!"
+    };
+
+    using (var client = new SmtpClient())
+    {
+        try
+        {
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+            await client.SendAsync(emailMessageRej);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;  
+        }
+    }
+     var emailRej = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.UserPassword);
+    if (emailRej == null)
+    {
+        throw new Exception("Failed to get Email!");
+    }
+
+   
+    var notificationRej = new Notification
+    {
+        UserId = data.UserId,   
+        EmailId = emailRej.EmailId,
+        Date = DateTime.UtcNow 
+    };
+
+  
+    _bikeDbContext.Notifications.Add(notificationRej);
+
+  Console.WriteLine(data.UserId+""+emailRej.EmailId);
+    var resultRej = await _bikeDbContext.SaveChangesAsync();
+    _bikeDbContext.Entry(notificationRej).Reload();
+    
     return false;
    }
      data.Status=Status.Accepted;
@@ -205,7 +250,7 @@ _bikeDbContext.Entry(existingUser).State=EntityState.Modified;
 
 public async Task <string> Login(LoginRequestDTO loginrequest)
 {
-    var data=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.Email==loginrequest.Email);
+    var data=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.Email==loginrequest.Email && u.Status==Status.Accepted);
 
     if(data == null)
     {

@@ -29,13 +29,13 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
 
       
 
-        return Ok(new { Success = result });
+        return Ok(result);
     }
     catch (Exception ex)
     {
        
        
-        return BadRequest(new { Success = false, Error = ex.Message });
+        return BadRequest(ex.Message );
     }
 }
 
