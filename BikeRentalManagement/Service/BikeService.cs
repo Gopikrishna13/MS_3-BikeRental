@@ -232,7 +232,7 @@ public async Task <Bike>GetByRegNo(string RegNo)
     {
         foreach(var img in d.bikeImages)
         {
-            i.Image=i.Image.Replace("wwwroot\\","").Replace("\\","/");
+            img.Image=img.Image.Replace("wwwroot\\","").Replace("\\","/");
         }
     }
 
@@ -302,7 +302,7 @@ public async Task<bool> UpdateBikeUnit(BikeUnitUpdateDTO bikeUnitUpdateDTO)
             }
         }
 
-        var imagesUpdated = await _bikerepository.UpdateBikeImages(bikeUnitUpdateDTO.unitId,bikeImages);
+        var imagesUpdated = await _bikerepository.UpdateBikeImages(bikeUnitUpdateDTO.UnitId,bikeImages);
         if (!imagesUpdated)
         {
             throw new Exception("Failed to update bike images.");
