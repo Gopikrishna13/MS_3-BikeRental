@@ -4,6 +4,8 @@ namespace BikeRentalManagement.DTOs.ResponseDTOs;
 
 public class RentalResponseDTO
 {
+    public int RequestId{get;set;}
+    
     public int BikeId{get;set;}
 
     public string RegistrationNumber{get;set;}

@@ -160,6 +160,7 @@ public class RentRepository:IRentRepository
         else if(status == 3)
         {
             request.Status=Status.Pending;
+            request.Due=(request.ToDate-DateTime.UtcNow).Days;
          
 var pdfPath = GeneratePdf(request, getuser);
     var emailMessage = new MimeMessage();
@@ -409,7 +410,7 @@ public async Task <List<RentalResponseDTO>>RequestByUser(int id)
 
     var request=await _bikeDbContext.RentalRequests.Where(r=>r.UserId == id) .Select(r => new RentalResponseDTO
         {
-            
+            RequestId=r.RequestId,
             BikeId = r.BikeId,
             RegistrationNumber = r.RegistrationNumber,
             FromDate = r.FromDate,
