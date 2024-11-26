@@ -19,7 +19,7 @@ public interface IBikeService
     Task <List<BikeUnit>>AddBike(BikeRequestDTO bikeRequestDTO);
     Task <bool>AddImages(BikeImageRequestDTO imageRequestDTO);
 
-    Task<List<BikeResponseDTO>>AllBikes(int pagenumber,int pagesize);
+    Task<List<BikeResponseDTO>>AllBikes();
 
     Task <bool>DeleteBike(string RegistrationNumber);
 

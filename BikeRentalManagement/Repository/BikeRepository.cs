@@ -153,17 +153,16 @@ public async Task<bool> AddBikeImages(BikeImages imageRequest)
 
 
 
-public async Task<List<BikeResponseDTO>> AllBikes(int pageNumber, int pageSize)
+public async Task<List<BikeResponseDTO>> AllBikes()
 {
-    int skip = (pageNumber - 1) * pageSize;
+ 
 
     var data = await _bikeDbContext.Bikes
         .Include(b => b.BikeUnits)
         .ThenInclude(bi => bi.bikeImages)
         .Include(m => m.Model)
         .ThenInclude(b => b.Brand)
-        .Skip(skip)
-        .Take(pageSize)
+   
         .ToListAsync();
 
 
@@ -203,7 +202,7 @@ public async Task<bool>DeleteBike(string RegistrationNumber)
 
 public async Task <bool>checkRental(string RegistrationNumber)
 {
-        var data = await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r => r.RegistrationNumber == RegistrationNumber && r.Status.Equals("Pending"));
+        var data = await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r => r.RegistrationNumber == RegistrationNumber && r.Status==Status.Pending);
         if(data != null)
         {
             return false;

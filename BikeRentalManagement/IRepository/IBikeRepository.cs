@@ -25,7 +25,7 @@ public interface IBikeRepository
 //Task <bool>AddBikeImages(List<BikeImages> bikeImages);
 Task <bool>AddBikeUnit(BikeUnit unit);
 Task <int> AddModelBike(int modelId);
-Task<List<BikeResponseDTO>>AllBikes(int pagenumber,int pagesize);
+Task<List<BikeResponseDTO>>AllBikes();
 Task<bool>checkRental(string RegistrationNumber);
 Task<bool>DeleteBike(string RegistrationNumber);
 Task <Bike>GetById(int id);

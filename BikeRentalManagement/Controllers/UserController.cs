@@ -54,11 +54,11 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
         
 
         [HttpGet("AllUsers")]
-        public async Task<IActionResult>AllUsers(int pagenumber,int pagesize)
+        public async Task<IActionResult>AllUsers()
         {
             try{
 
-                var data=await _userService.AllUsers(pagenumber,pagesize);
+                var data=await _userService.AllUsers();
                 return Ok(data);
 
             }catch(Exception ex)

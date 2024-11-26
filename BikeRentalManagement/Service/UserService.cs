@@ -97,9 +97,9 @@ public UserService(IUserRepository userRepository)
         }
     }
 
-    public async Task<List<User>>AllUsers(int pagenumber,int pagesize)
+    public async Task<List<User>>AllUsers()
     {
-        var data=await _userRepository.AllUsers(pagenumber,pagesize);
+        var data=await _userRepository.AllUsers();
 
         if(data == null)
         {
@@ -202,7 +202,7 @@ public async Task<UserResponseDTO> UserById(int Id)
      
         var user = new User
         {
-            UserId = Id,
+           // UserId = Id,
             FirstName = userupdate.FirstName ?? existingUser.FirstName,
             LastName = userupdate.LastName ?? existingUser.LastName,
             Email = userupdate.Email ?? existingUser.Email,

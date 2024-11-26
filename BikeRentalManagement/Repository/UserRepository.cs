@@ -159,10 +159,10 @@ public async Task<bool>UserRequest(int id,int status)
 }
 
 
-    public async Task<List<User>>AllUsers(int pagenumber,int pagesize)
+    public async Task<List<User>>AllUsers()
     {
-        int skip=(pagenumber-1)* pagesize;
-        var data=await _bikeDbContext.Users.Skip(skip).Take(pagesize).ToListAsync();
+      
+        var data=await _bikeDbContext.Users.ToListAsync();
         return data;
     }
 

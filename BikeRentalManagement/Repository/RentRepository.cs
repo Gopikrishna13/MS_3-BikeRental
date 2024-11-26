@@ -313,6 +313,7 @@ public async Task<bool>CancelRequest(int id)
 
 
     data.Status=Status.Cancelled;
+    data.Due=0;
       var emailMessage = new MimeMessage();
     emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
     emailMessage.To.Add(new MailboxAddress("", getuser.Email));

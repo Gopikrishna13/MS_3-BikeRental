@@ -97,10 +97,10 @@ namespace BikeRentalManagement
         }
 
         [HttpGet("AllBikes")]
-        public async Task<IActionResult>AllBikes(int pagenumber,int pagesize)
+        public async Task<IActionResult>AllBikes()
         {
             try{
-                var data=await _bikeservice.AllBikes(pagenumber,pagesize);
+                var data=await _bikeservice.AllBikes();
                 return Ok(data);
 
             }catch(Exception ex)

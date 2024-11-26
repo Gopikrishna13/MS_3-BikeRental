@@ -172,9 +172,9 @@ public async  Task <bool>AddImages([FromForm]BikeImageRequestDTO imageRequestDTO
 }
 
 
-public async Task<List<BikeResponseDTO>>AllBikes(int pagenumber,int pagesize)
+public async Task<List<BikeResponseDTO>>AllBikes()
 {
-    var data=await _bikerepository.AllBikes(pagenumber,pagesize);
+    var data=await _bikerepository.AllBikes();
 
     if(data == null)
     {
