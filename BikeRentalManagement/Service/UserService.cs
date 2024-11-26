@@ -97,9 +97,10 @@ public UserService(IUserRepository userRepository)
         }
     }
 
-    public async Task<List<User>>AllUsers()
+    public async Task<List<AllUserResponseDTO>>AllUsers()
     {
         var data=await _userRepository.AllUsers();
+        var response=new List<AllUserResponseDTO>();
 
         if(data == null)
         {
@@ -111,8 +112,27 @@ public UserService(IUserRepository userRepository)
                 d.LicenseImage=d.LicenseImage?.Replace("\\","/");
                 d.CameraCapture=d.CameraCapture?.Replace("wwwroot","");
                 d.CameraCapture=d.CameraCapture?.Replace("\\","/");
+             
+                
+                  var  AllUserResponse=new AllUserResponseDTO
+            {
+                FirstName=d.FirstName,
+               LastName=d.LastName,
+                Email=d.Email,
+                LicenseNumber=d.LicenseNumber,
+               MobileNumber=d.MobileNumber,
+               UserId=d.UserId,
+               LicenseImage=d.LicenseImage,
+                CameraCapture=d.CameraCapture,
+               Status=d.Status.ToString()
+
+            };
+            response.Add(AllUserResponse);
+
             }
-            return data;
+
+        
+            return response;
         }
     }
 public async Task<UserResponseDTO> UserById(int Id)

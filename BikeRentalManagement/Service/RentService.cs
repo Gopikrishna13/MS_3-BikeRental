@@ -63,14 +63,39 @@ public class RentService:IRentService
         return data;
 
      }
- public async Task <List<RentalRequest>> AllRequest()
+ public async Task <List<AllRentalResponseDTO>> AllRequest()
  {
     var data=await _rentRepository.AllRequest();
     if(data == null)
     {
         throw new Exception("Nothing Found!");
     }
-    return data;
+
+    var response=new List<AllRentalResponseDTO>();
+
+    foreach(var d in data)
+    {
+        var rentalresponse=new AllRentalResponseDTO
+        {
+            RequestId=d.RequestId,
+            UserId=d.UserId,
+            BikeId=d.BikeId,
+            RegistrationNumber=d.RegistrationNumber,
+            FromDate=d.FromDate,
+            ToDate=d.ToDate,
+            FromLocation=d.FromLocation,
+            ToLocation=d.ToLocation,
+            Distance=d.Distance,
+            Amount=d.Amount,
+            Due=d.Due,
+            Status=d.Status.ToString()
+
+
+        };
+
+        response.Add(rentalresponse);
+    }
+    return response;
 
  }
 

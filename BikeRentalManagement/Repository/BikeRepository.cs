@@ -297,7 +297,7 @@ public async Task <Bike>GetByRegNo(string RegNo)
 
         if(findImage != null)
         {
-            _bikeDbContext.BikeImages.RemoveRange(findImage);
+             _bikeDbContext.BikeImages.RemoveRange(findImage);
              _bikeDbContext.BikeImages.UpdateRange(bikeImages);
         }
      

@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MimeKit;
+using BikeRentalManagement.DTOs.ResponseDTOs;
 
 namespace BikeRentalManagement.Repository;
 

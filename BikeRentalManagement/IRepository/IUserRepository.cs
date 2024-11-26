@@ -2,6 +2,7 @@ using System;
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.Repository;
+using BikeRentalManagement.DTOs.ResponseDTOs;
 
 namespace BikeRentalManagement.IRepository;
 

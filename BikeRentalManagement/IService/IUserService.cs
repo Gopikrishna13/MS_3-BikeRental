@@ -8,7 +8,7 @@ namespace BikeRentalManagement.IService;
 public interface IUserService
 {
 Task <bool> CreateUser(UserRequestDTO userRequestDTO);
-Task<List<User>>AllUsers();
+Task<List<AllUserResponseDTO>>AllUsers();
 Task <UserResponseDTO>UserById(int Id);
 Task <bool> DeleteById(int Id);
 

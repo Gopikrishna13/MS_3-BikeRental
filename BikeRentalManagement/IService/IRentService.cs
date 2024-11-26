@@ -9,7 +9,7 @@ public interface IRentService
 {
     Task<bool>RequestRent(RentRequestDTO rentRequestDTO);
     Task<List<BookedDatesResponseDTO>>GetBikeBookedDates(string RegistrationNumber);
-   Task <List<RentalRequest>> AllRequest();
+   Task <List<AllRentalResponseDTO>> AllRequest();
    Task <RentalRequest>GetRequestById(int id);
 
    Task<bool>AcceptRejectRequest(int id,int status);
