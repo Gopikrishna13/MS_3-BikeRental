@@ -57,7 +57,7 @@ public UserService(IUserRepository userRepository)
             Email = userRequestDTO.Email,
             MobileNumber = userRequestDTO.MobileNumber,
             NIC = userRequestDTO.NIC,
-            Password = userRequestDTO.Password,
+            Password = "12345678",
             LicenseNumber = userRequestDTO.LicenseNumber,
             Role = userRequestDTO.Role,
             LicenseImage = imagePath,

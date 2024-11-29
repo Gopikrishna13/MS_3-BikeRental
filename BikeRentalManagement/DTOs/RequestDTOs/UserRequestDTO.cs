@@ -24,8 +24,7 @@ public class UserRequestDTO
     [Required]
     public string NIC { get; set; }
 
-    [Required]
-    public string Password { get; set; }
+   
 
     [Required]
     public string LicenseNumber { get; set; }

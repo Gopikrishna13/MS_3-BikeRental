@@ -39,8 +39,24 @@ public class RentRepository:IRentRepository
     {
 
         var data=await _bikeDbContext.RentalRequests
-                .Where(r=>r.RegistrationNumber==RegistrationNumber && r.Status == Status.Pending).ToListAsync();
+                .Where(r=>r.RegistrationNumber==RegistrationNumber && r.Status == Status.Pending ).ToListAsync();
         foreach(var d in data)
+        {
+            if(d.FromDate < ToDate && d.ToDate > FromDate)
+            {
+                return true;
+
+            }
+        }
+      return false;
+    }
+
+    public async Task <bool>CheckRequest(int id,string RegistrationNumber,DateTime FromDate,DateTime ToDate)
+    {
+        var data=await _bikeDbContext.RentalRequests.
+                 Where(r=>r.RegistrationNumber == RegistrationNumber && r.Status == Status.Pending && r.RequestId!=id).
+                 ToListAsync();
+         foreach(var d in data)
         {
             if(d.FromDate < ToDate && d.ToDate > FromDate)
             {
@@ -373,6 +389,7 @@ public async  Task <bool> UpdateRequest(int id,RentalRequest rentRequest)
     request.FromDate=rentRequest.FromDate;
     request.ToDate=rentRequest.ToDate;
     request.FromLocation=rentRequest.FromLocation;
+    request.ToLocation=rentRequest.ToLocation;
     request.Distance=rentRequest.Distance;
     request.Due=0;
     request.Amount=rentRequest.Amount;

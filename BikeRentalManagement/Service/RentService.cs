@@ -149,9 +149,9 @@ public class RentService:IRentService
 
         };
 
-        var checkRequest=await _rentRepository.CheckRequest(rentRequestDTO.RegistrationNumber,rentRequestDTO.FromDate,rentRequestDTO.ToDate);
+        var checkRequest=await _rentRepository.CheckRequest(id,rentRequestDTO.RegistrationNumber,rentRequestDTO.FromDate,rentRequestDTO.ToDate);
 
-        if(checkRequest)
+        if(checkRequest )
         {
             throw new Exception("Already Booked!");
         }
