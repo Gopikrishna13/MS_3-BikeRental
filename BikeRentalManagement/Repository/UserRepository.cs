@@ -55,7 +55,7 @@ public async Task<bool> UserRequest(int id, int status)
         throw new Exception("No Such User!");
     }
 
-    if (status == 5)
+    if (status == 2)
     {
         data.Status = Status.Rejected;
     }
@@ -75,7 +75,7 @@ public async Task<bool> UserRequest(int id, int status)
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error saving changes: {ex.Message}");
+        Console.WriteLine(ex.Message);
         throw;
     }
 
@@ -87,7 +87,7 @@ public async Task<bool> UserRequest(int id, int status)
 public async Task<bool> SendEmail(int status, User user)
 {
     string txtTemplate = " ";
-    if (status == 5)
+    if (status == 2)
     {
         txtTemplate = $"{user.FirstName}\n Your Request has been rejected!";
     }
@@ -337,6 +337,31 @@ public async Task <string> Login(LoginRequestDTO loginrequest)
         throw new Exception("Wrong Password");
     }
 
+var mailPassword=new Email{
+    EmailType=EmailType.UserPassword
+
+};
+
+var mailBooking=new Email{
+EmailType=EmailType.BookingConfirmation
+};
+
+var mailReturn=new Email
+{
+    EmailType=EmailType.ReturnConfirmation
+};
+
+var mailLate=new Email
+{
+    EmailType=EmailType.LateRentalAlert
+
+};
+await _bikeDbContext.Emails.AddAsync(mailPassword);
+await _bikeDbContext.Emails.AddAsync(mailBooking);
+await _bikeDbContext.Emails.AddAsync(mailReturn);
+await _bikeDbContext.Emails.AddAsync(mailLate);
+
+await _bikeDbContext.SaveChangesAsync();
 var token=CreateToken(dataUser);
 Console.WriteLine(token);
     return token;
