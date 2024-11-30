@@ -47,75 +47,62 @@ public async Task<bool> CreateUser(User user)
    
 }
 
-public async Task<bool>UserRequest(int id,int status)
+public async Task<bool> UserRequest(int id, int status)
 {
-     var data=await _bikeDbContext.Users.FirstOrDefaultAsync(u=>u.UserId == id);
-     if(data == null)
-     {
+    var data = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.UserId == id);
+    if (data == null)
+    {
         throw new Exception("No Such User!");
-     }
-  
-   if(status==5)
-   {
-    data.Status=Status.Rejected;
-    await _bikeDbContext.SaveChangesAsync();
-     var emailMessageRej = new MimeMessage();
-    emailMessageRej.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
-    emailMessageRej.To.Add(new MailboxAddress("", data.Email));
-    emailMessageRej.Subject = "Request Reject!";
-    emailMessageRej.Body = new TextPart("plain")
-    {
-        Text = $" {data.FirstName}\n Your Request has been rejected!"
-    };
-
-    using (var client = new SmtpClient())
-    {
-        try
-        {
-            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
-            await client.SendAsync(emailMessageRej);
-            await client.DisconnectAsync(true);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return false;  
-        }
     }
-     var emailRej = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.UserPassword);
-    if (emailRej == null)
+
+    if (status == 5)
     {
-        throw new Exception("Failed to get Email!");
+        data.Status = Status.Rejected;
+    }
+    else if (status == 6)
+    {
+        data.Status = Status.Accepted;
     }
 
    
-    var notificationRej = new Notification
-    {
-        UserId = data.UserId,   
-        EmailId = emailRej.EmailId,
-        Date = DateTime.UtcNow 
-    };
+    //_bikeDbContext.Entry(data).Property(d => d.Status).IsModified = true;
 
   
-    _bikeDbContext.Notifications.Add(notificationRej);
+    try
+    {
+        await _bikeDbContext.SaveChangesAsync();
+        await _bikeDbContext.Entry(data).ReloadAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error saving changes: {ex.Message}");
+        throw;
+    }
 
-  Console.WriteLine(data.UserId+""+emailRej.EmailId);
-    var resultRej = await _bikeDbContext.SaveChangesAsync();
-    _bikeDbContext.Entry(notificationRej).Reload();
-    
-    return false;
-   }
-     data.Status=Status.Accepted;
-     await _bikeDbContext.SaveChangesAsync();
+    var response = await SendEmail(status, data);
+    return response;
+}
+
+
+public async Task<bool> SendEmail(int status, User user)
+{
+    string txtTemplate = " ";
+    if (status == 5)
+    {
+        txtTemplate = $"{user.FirstName}\n Your Request has been rejected!";
+    }
+    else if (status == 6)
+    {
+        txtTemplate = $"Welcome {user.FirstName}\n Thank you for registering on our site.\nYour Username: {user.Email}\nYour Password: {12345678}\nPlease update your password!";
+    }
 
     var emailMessage = new MimeMessage();
     emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
-    emailMessage.To.Add(new MailboxAddress("", data.Email));
+    emailMessage.To.Add(new MailboxAddress("", user.Email));
     emailMessage.Subject = "Activate Account!";
     emailMessage.Body = new TextPart("plain")
     {
-        Text = $"Welcome {data.FirstName}\n Thank you for registering on our site.\nYour Username: {data.Email}\nYour Password: {12345678}\nPlease update your password!"
+        Text = txtTemplate
     };
 
     using (var client = new SmtpClient())
@@ -130,7 +117,7 @@ public async Task<bool>UserRequest(int id,int status)
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return false;  
+            return false;
         }
     }
 
@@ -140,24 +127,22 @@ public async Task<bool>UserRequest(int id,int status)
         throw new Exception("Failed to get Email!");
     }
 
-   
     var notification = new Notification
     {
-        UserId = data.UserId,   
+        UserId = user.UserId,
         EmailId = email.EmailId,
-        Date = DateTime.UtcNow 
+        Date = DateTime.UtcNow
     };
 
-  
     _bikeDbContext.Notifications.Add(notification);
 
-  Console.WriteLine(data.UserId+""+email.EmailId);
+    Console.WriteLine(user.UserId + "" + email.EmailId);
     var result = await _bikeDbContext.SaveChangesAsync();
     _bikeDbContext.Entry(notification).Reload();
 
     return result > 0;
-
 }
+
 
 
     public async Task<List<User>>AllUsers()
