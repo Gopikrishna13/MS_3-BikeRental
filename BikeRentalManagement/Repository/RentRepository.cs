@@ -153,20 +153,7 @@ public class RentRepository:IRentRepository
         }
     }
 
-    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
-    if (email == null)
-    {
-        throw new Exception("Failed to get Email!");
-    }
-              var notification = new Notification
-    {
-        UserId = getuser.UserId,   
-        EmailId = email.EmailId,
-        Date = DateTime.UtcNow 
-    };
-
-  
-    _bikeDbContext.Notifications.Add(notification); 
+   
            
             requeststatus= false;
         }
@@ -215,20 +202,7 @@ var pdfPath = GeneratePdf(request, getuser);
         }
     }
 
-    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
-    if (email == null)
-    {
-        throw new Exception("Failed to get Email!");
-    }
-              var notification = new Notification
-    {
-        UserId = getuser.UserId,   
-        EmailId = email.EmailId,
-        Date = DateTime.UtcNow 
-    };
-
-  
-    _bikeDbContext.Notifications.Add(notification); 
+   
             requeststatus= true;
         }
 
@@ -262,20 +236,7 @@ var pdfPath = GeneratePdf(request, getuser);
         }
     }
 
-    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.ReturnConfirmation);
-    if (email == null)
-    {
-        throw new Exception("Failed to get Email!");
-    }
-              var notification = new Notification
-    {
-        UserId = getuser.UserId,   
-        EmailId = email.EmailId,
-        Date = DateTime.UtcNow 
-    };
-
-  
-    _bikeDbContext.Notifications.Add(notification); 
+ 
 
         }
          await _bikeDbContext.SaveChangesAsync();
@@ -300,7 +261,7 @@ private string GeneratePdf(RentalRequest request, User user)
     graphics.DrawString($"To Location: {request.ToLocation}", font, XBrushes.Black, new XPoint(20, 320));
     graphics.DrawString($"Distance: {request.Distance} km", font, XBrushes.Black, new XPoint(20, 360));
     graphics.DrawString($"Amount: ${request.Amount}", font, XBrushes.Black, new XPoint(20, 400));
-    graphics.DrawString($"Due: {request.Due}", font, XBrushes.Black, new XPoint(20, 440));
+   // graphics.DrawString($"Due: {request.Due}", font, XBrushes.Black, new XPoint(20, 440));
 
 Random rn=new Random();
 var num=rn.Next();
@@ -355,20 +316,7 @@ public async Task<bool>CancelRequest(int id)
         }
     }
 
-    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.BookingConfirmation);
-    if (email == null)
-    {
-        throw new Exception("Failed to get Email!");
-    }
-              var notification = new Notification
-    {
-        UserId = getuser.UserId,   
-        EmailId = email.EmailId,
-        Date = DateTime.UtcNow 
-    };
 
-  
-    _bikeDbContext.Notifications.Add(notification); 
     await _bikeDbContext.SaveChangesAsync();
     return true;
 }
@@ -520,21 +468,7 @@ public async Task<bool> LateReturns()
         }
 
 
-        var emailTemplate = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.LateRentalAlert);
-        if (emailTemplate == null)
-        {
-            Console.WriteLine("Failed to get Email ");
-            continue;
-        }
-
-        var notification = new Notification
-        {
-            UserId = usermail.UserId,
-            EmailId = emailTemplate.EmailId,
-            Date = DateTime.UtcNow
-        };
-
-        _bikeDbContext.Notifications.Add(notification);
+       
     }
 
    

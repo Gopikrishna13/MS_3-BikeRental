@@ -31,7 +31,7 @@ public class UserRepository:IUserRepository
 public async Task<bool> CreateUser(User user)
 {
  
-    var checkUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email || u.NIC == user.NIC || u.LicenseNumber == user.LicenseNumber);
+    var checkUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email || u.NIC == user.NIC || u.LicenseNumber == user.LicenseNumber && u.Status==Status.Accepted);
     if (checkUser != null)
     {
         throw new Exception("User already exists!");
@@ -121,26 +121,13 @@ public async Task<bool> SendEmail(int status, User user)
         }
     }
 
-    var email = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.UserPassword);
-    if (email == null)
-    {
-        throw new Exception("Failed to get Email!");
-    }
+   
 
-    var notification = new Notification
-    {
-        UserId = user.UserId,
-        EmailId = email.EmailId,
-        Date = DateTime.UtcNow
-    };
-
-    _bikeDbContext.Notifications.Add(notification);
-
-    Console.WriteLine(user.UserId + "" + email.EmailId);
+  
     var result = await _bikeDbContext.SaveChangesAsync();
-    _bikeDbContext.Entry(notification).Reload();
+    
 
-    return result > 0;
+    return true;
 }
 
 
@@ -305,23 +292,9 @@ public async Task <string> Login(LoginRequestDTO loginrequest)
             Console.WriteLine($"Email sending failed for UserId: {req.UserId}. Error: {ex.Message}");
             continue;
         }
+   
 
-
-        var emailTemplate = await _bikeDbContext.Emails.FirstOrDefaultAsync(e => e.EmailType == EmailType.LateRentalAlert);
-        if (emailTemplate == null)
-        {
-            Console.WriteLine("Failed to get Email ");
-            continue;
-        }
-
-        var notification = new Notification
-        {
-            UserId = usermail.UserId,
-            EmailId = emailTemplate.EmailId,
-            Date = DateTime.UtcNow
-        };
-
-        _bikeDbContext.Notifications.Add(notification);
+      
     }
 
    
@@ -337,31 +310,8 @@ public async Task <string> Login(LoginRequestDTO loginrequest)
         throw new Exception("Wrong Password");
     }
 
-var mailPassword=new Email{
-    EmailType=EmailType.UserPassword
 
-};
 
-var mailBooking=new Email{
-EmailType=EmailType.BookingConfirmation
-};
-
-var mailReturn=new Email
-{
-    EmailType=EmailType.ReturnConfirmation
-};
-
-var mailLate=new Email
-{
-    EmailType=EmailType.LateRentalAlert
-
-};
-await _bikeDbContext.Emails.AddAsync(mailPassword);
-await _bikeDbContext.Emails.AddAsync(mailBooking);
-await _bikeDbContext.Emails.AddAsync(mailReturn);
-await _bikeDbContext.Emails.AddAsync(mailLate);
-
-await _bikeDbContext.SaveChangesAsync();
 var token=CreateToken(dataUser);
 Console.WriteLine(token);
     return token;
