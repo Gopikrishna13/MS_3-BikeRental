@@ -4931,11 +4931,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
+      "projectUniqueName": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
       "projectName": "BikeRentalManagement",
-      "projectPath": "c:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
+      "projectPath": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\BikeRentalManagement.csproj",
       "packagesPath": "C:\\Users\\mpoul\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\obj\\",
+      "outputPath": "C:\\Users\\mpoul\\Desktop\\New folder\\BikeRentalManagement\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mpoul\\AppData\\Roaming\\NuGet\\NuGet.Config"

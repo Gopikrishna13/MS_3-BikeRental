@@ -31,8 +31,8 @@ public class UserRepository:IUserRepository
 public async Task<bool> CreateUser(User user)
 {
  
-    var checkUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email || u.NIC == user.NIC || u.LicenseNumber == user.LicenseNumber && u.Status==Status.Accepted);
-    if (checkUser != null)
+    var checkUser = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email || u.NIC == user.NIC || u.LicenseNumber == user.LicenseNumber);
+    if (checkUser != null && checkUser.Status==Status.Accepted)
     {
         throw new Exception("User already exists!");
     }
