@@ -28,7 +28,7 @@ public class RentService:IRentService
             ToLocation=rentRequestDTO.ToLocation,
             Distance=rentRequestDTO.Distance,
             Amount=rentRequestDTO.Amount,
-            Status=rentRequestDTO.Status
+            Status=Status.Waiting
 
         };
 
@@ -136,7 +136,7 @@ public class RentService:IRentService
 
       var rentRequest=new RentalRequest
         {
-            UserId=rentRequestDTO.UserId,
+            UserId=0,
             BikeId=rentRequestDTO.BikeId,
             RegistrationNumber=rentRequestDTO.RegistrationNumber,
             FromDate=rentRequestDTO.FromDate,
@@ -145,7 +145,7 @@ public class RentService:IRentService
             ToLocation=rentRequestDTO.ToLocation,
             Distance=rentRequestDTO.Distance,
             Amount=rentRequestDTO.Amount,
-            Status=rentRequestDTO.Status
+            Status=Status.Waiting
 
         };
 

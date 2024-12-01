@@ -331,7 +331,7 @@ public async  Task <bool> UpdateRequest(int id,RentalRequest rentRequest)
         throw new Exception("No Such Request!");
     }
 
-    request.UserId=rentRequest.UserId;
+    request.UserId=request.UserId;
     request.BikeId=rentRequest.BikeId;
     request.RegistrationNumber=rentRequest.RegistrationNumber;
     request.FromDate=rentRequest.FromDate;
