@@ -23,6 +23,11 @@ public class RentRepository:IRentRepository
     }
     public async Task<bool> RequestRent(RentalRequest rentRequest)
     {
+        var checkBike=await _bikeDbContext.BikeUnits.FirstOrDefaultAsync(u=>u.RegistrationNumber == rentRequest.RegistrationNumber);
+        if(checkBike == null)
+        {
+            throw new Exception("No Such Bike!");
+        }
         var data=await _bikeDbContext.RentalRequests.AddAsync(rentRequest);
         await _bikeDbContext.SaveChangesAsync();
         if(data != null)
@@ -326,7 +331,9 @@ public async  Task <bool> UpdateRequest(int id,RentalRequest rentRequest)
 {
     var request=await _bikeDbContext.RentalRequests.FirstOrDefaultAsync(r=>r.RequestId == id);
 
-    if(request == null)
+    var checkBike=await _bikeDbContext.BikeUnits.FirstOrDefaultAsync(u=>u.RegistrationNumber == request.RegistrationNumber);
+
+    if(request == null && checkBike==null)
     {
         throw new Exception("No Such Request!");
     }
