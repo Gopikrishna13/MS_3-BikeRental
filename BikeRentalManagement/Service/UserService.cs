@@ -157,8 +157,8 @@ public async Task<UserResponseDTO> UserById(int Id)
             NIC = user.NIC,
             LicenseNumber = user.LicenseNumber,
             Password=user.Password,
-            LicenseImage = user.LicenseImage,
-            CameraCapture = user.CameraCapture
+            LicenseImage = user.LicenseImage.Replace("wwwroot\\","/").Replace("\\","/"),
+            CameraCapture = user.CameraCapture.Replace("wwwroot\\","/").Replace("\\","/")
         };
 
         return response;

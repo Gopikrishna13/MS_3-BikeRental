@@ -1,11 +1,13 @@
 using BikeRentalManagement.Database.Entities;
 using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeRentalManagement.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -52,7 +54,7 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
             }
         }
         
-
+ [Authorize]
         [HttpGet("AllUsers")]
         public async Task<IActionResult>AllUsers()
         {
@@ -63,10 +65,12 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
 
             }catch(Exception ex)
             {
+                 
                 return BadRequest(ex.Message);
             }
         }
 
+[Authorize]
         [HttpGet("UserById")]
         public async Task <IActionResult>UserById(int Id)
         {
@@ -80,6 +84,7 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
             }
         }
 
+[Authorize]
         [HttpDelete("DeleteById")]
         public async Task <IActionResult> DeleteById(int Id)
         {
@@ -93,6 +98,7 @@ public async Task<IActionResult> CreateUser([FromForm] UserRequestDTO userReques
             }
         }
 
+[Authorize]
         [HttpPut("UpdateUser")]
         public async Task <IActionResult> UpdateUser(int Id,UserUpdateRequestDTO userupdate)
         {
