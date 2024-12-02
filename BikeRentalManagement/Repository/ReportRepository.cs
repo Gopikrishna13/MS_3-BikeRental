@@ -41,7 +41,7 @@ public class ReportRepository:IReportRepository
 
      public async Task<object>GetRevenueByMonth()
      {
-      var data=await _bikeDbContext.RentalRequests.ToListAsync();
+      var data=await _bikeDbContext.RentalRequests.Where(r=>r.Status == Status.Returned).ToListAsync();
       
         var list =  from i in data
     group i by i.ToDate.ToString("MMM") into grp
@@ -53,7 +53,7 @@ public class ReportRepository:IReportRepository
   public async Task<object> GetRevenueByBike()
 {
     var data = await (
-        from rental in _bikeDbContext.RentalRequests
+        from rental in _bikeDbContext.RentalRequests.Where(r=>r.Status == Status.Returned)
         join bike in _bikeDbContext.Bikes on rental.BikeId equals bike.BikeId
         join model in _bikeDbContext.Models on bike.ModelId equals model.ModelId
         group rental by model.ModelName into grp
