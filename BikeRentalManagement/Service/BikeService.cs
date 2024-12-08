@@ -92,17 +92,8 @@ public async Task<List<BikeUnit>> AddBike([FromBody] BikeRequestDTO bikeRequestD
     }
 
    
-
-    foreach (var bikeUnit in bikeRequestDTO.BikeUnits)
-    {
-        var chkReg = await _bikerepository.CheckRegNo(bikeUnit.RegistrationNumber);
-        if (!chkReg)
-        {
-            throw new Exception("Registration Number Already Exists!");
-        }
-    }
-
-    var modelId = await _bikerepository.FindModelId(bikeRequestDTO.ModelName);
+var bUnit=new  List<BikeUnit>();
+ var modelId = await _bikerepository.FindModelId(bikeRequestDTO.ModelName);
     var getbikeid = await _bikerepository.AddModelBike(modelId);
 
     if (getbikeid <= 0)
@@ -110,15 +101,21 @@ public async Task<List<BikeUnit>> AddBike([FromBody] BikeRequestDTO bikeRequestD
         throw new Exception("No ID!");
     }
 
-var bUnit=new  List<BikeUnit>();
-    foreach (var bikeUnt in bikeRequestDTO.BikeUnits)
+    foreach (var bikeUnit in bikeRequestDTO.BikeUnits)
     {
+        var chkReg = await _bikerepository.CheckRegNo(bikeUnit.RegistrationNumber);
+        
+        if (!chkReg)
+        {
+            throw new Exception("Registration Number Already Exists!");
+        }
+
         var unit = new BikeUnit
         {
             BikeId = getbikeid,
-            RegistrationNumber = bikeUnt.RegistrationNumber,
-            Year = bikeUnt.Year,
-            RentPerDay = bikeUnt.RentPerDay
+            RegistrationNumber = bikeUnit.RegistrationNumber,
+            Year = bikeUnit.Year,
+            RentPerDay = bikeUnit.RentPerDay
         };
 
         var unitId = await _bikerepository.AddBikeUnit(unit);
@@ -127,8 +124,29 @@ var bUnit=new  List<BikeUnit>();
         throw new Exception("Failed To Add Unit!");
      }
        bUnit.Add(unit);
-        //id.Add(unitId);
+
     }
+
+   
+
+    // foreach (var bikeUnt in bikeRequestDTO.BikeUnits)
+    // {
+    //     var unit = new BikeUnit
+    //     {
+    //         BikeId = getbikeid,
+    //         RegistrationNumber = bikeUnt.RegistrationNumber,
+    //         Year = bikeUnt.Year,
+    //         RentPerDay = bikeUnt.RentPerDay
+    //     };
+
+    //     var unitId = await _bikerepository.AddBikeUnit(unit);
+    //  if(!unitId)
+    //  {
+    //     throw new Exception("Failed To Add Unit!");
+    //  }
+    //    bUnit.Add(unit);
+    //     //id.Add(unitId);
+    // }
 
    
 return bUnit;
