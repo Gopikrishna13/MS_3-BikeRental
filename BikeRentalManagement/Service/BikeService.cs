@@ -91,9 +91,14 @@ public async Task<List<BikeUnit>> AddBike([FromBody] BikeRequestDTO bikeRequestD
         Directory.CreateDirectory(imageDirectory);
     }
 
+var distinctList = bikeRequestDTO.BikeUnits .Select(bkUnit => bkUnit.RegistrationNumber) .Distinct() .ToList();
+if(distinctList.Count()!=bikeRequestDTO.BikeUnits.Count())
+{
+    throw new Exception("Duplicate Registration Number!");
+}
    
-var bUnit=new  List<BikeUnit>();
- var modelId = await _bikerepository.FindModelId(bikeRequestDTO.ModelName);
+    var bUnit=new  List<BikeUnit>();
+    var modelId = await _bikerepository.FindModelId(bikeRequestDTO.ModelName);
     var getbikeid = await _bikerepository.AddModelBike(modelId);
 
     if (getbikeid <= 0)
