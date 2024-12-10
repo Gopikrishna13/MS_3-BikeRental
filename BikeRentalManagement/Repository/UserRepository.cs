@@ -246,52 +246,52 @@ public async Task <string> Login(LoginRequestDTO loginrequest)
 
          
             var adminToken = CreateToken(admin);
-            var data = await _bikeDbContext.RentalRequests
-        .Where(r => r.Status == Status.Pending && r.Due <= 0)
-        .ToListAsync();
+    //         var data = await _bikeDbContext.RentalRequests
+    //     .Where(r => r.Status == Status.Pending && r.Due <= 0)
+    //     .ToListAsync();
 
-    foreach (var req in data)
-    {
+    // foreach (var req in data)
+    // {
         
-        var usermail = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.UserId == req.UserId);
-        int overdueDays = Math.Abs(req.Due);
+    //     var usermail = await _bikeDbContext.Users.FirstOrDefaultAsync(u => u.UserId == req.UserId);
+    //     int overdueDays = Math.Abs(req.Due);
 
-    double fine = req.Amount * 0.1 * overdueDays;
+    // double fine = req.Amount * 0.1 * overdueDays;
 
    
-       req.Amount += (int)fine;
-        if (usermail == null)
-        {
-            Console.WriteLine($"User not found for UserId: {req.UserId}");
-            continue;
-        }
+    //    req.Amount += (int)fine;
+    //     if (usermail == null)
+    //     {
+    //         Console.WriteLine($"User not found for UserId: {req.UserId}");
+    //         continue;
+    //     }
 
 
-        var emailMessage = new MimeMessage();
-        emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
-        emailMessage.To.Add(new MailboxAddress("", usermail.Email));
-        emailMessage.Subject = "Late Return Notice";
-        emailMessage.Body = new TextPart("plain")
-        {
-            Text = $"Dear {usermail.FirstName},\n\nYour rental request is overdue for Request ID:{req.RequestId}. Please return the bike as soon as possible. Your Final Charge :{req.Amount}"
-        };
+    //     var emailMessage = new MimeMessage();
+    //     emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    //     emailMessage.To.Add(new MailboxAddress("", usermail.Email));
+    //     emailMessage.Subject = "Late Return Notice";
+    //     emailMessage.Body = new TextPart("plain")
+    //     {
+    //         Text = $"Dear {usermail.FirstName},\n\nYour rental request is overdue for Request ID:{req.RequestId}. Please return the bike as soon as possible. Your Final Charge :{req.Amount}"
+    //     };
 
 
-        try
-        {
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Email sending failed for UserId: {req.UserId}. Error: {ex.Message}");
-            continue;
-        }
+    //     try
+    //     {
+    //         using (var client = new SmtpClient())
+    //         {
+    //             await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+    //             await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+    //             await client.SendAsync(emailMessage);
+    //             await client.DisconnectAsync(true);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Console.WriteLine($"Email sending failed for UserId: {req.UserId}. Error: {ex.Message}");
+    //         continue;
+    //     }
    
 
       

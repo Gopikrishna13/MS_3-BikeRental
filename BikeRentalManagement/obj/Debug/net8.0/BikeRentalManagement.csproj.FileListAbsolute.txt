@@ -153,3 +153,7 @@ C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\SixLabor
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\de\PdfSharpCore.resources.dll
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\BikeRentalManagement.staticwebassets.runtime.json
 C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\Quartz.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\Quartz.AspNetCore.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\Quartz.Extensions.DependencyInjection.dll
+C:\Users\mpoul\Desktop\New folder\BikeRentalManagement\bin\Debug\net8.0\Quartz.Extensions.Hosting.dll
