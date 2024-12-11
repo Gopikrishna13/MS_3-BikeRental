@@ -484,5 +484,27 @@ public async Task<bool> LateReturns()
     return true;
 }
 
+public async Task<List<RentalRequest>> Reminder()
+{
+   var today = DateTime.UtcNow.AddHours(5.5).Date;
+   var data = await _bikeDbContext.RentalRequests .Where(r => r.FromDate.Date == today && r.Status == Status.Pending) 
+             .ToListAsync();
+
+   
+
+    return data;
+}
+
+public async Task <string> GetPhoneNumber(int id)
+{
+    var data=await _bikeDbContext.Users.Where(u=>u.UserId == id).Select(u=>u.MobileNumber).FirstOrDefaultAsync();
+    return data;
+}
+
+public async Task <string> GetEmail(int id)
+{
+    var data=await _bikeDbContext.Users.Where(u=>u.UserId == id).Select(u=>u.Email).FirstOrDefaultAsync();
+    return data;
+}
 
 }

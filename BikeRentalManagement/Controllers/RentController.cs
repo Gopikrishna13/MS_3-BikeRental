@@ -138,10 +138,23 @@ namespace BikeRentalManagement.Controllers
         }
 
         [HttpPut("LateReturns")]
-        public async Task <IActionResult>LateReturns()
+        public async Task <IActionResult> LateReturns()
         {
             try{
                 var data=await _rentservice.LateReturns();
+                return Ok(data);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("Reminder")]
+        public async Task<IActionResult> Reminder()
+        {
+            try{
+                var data=await _rentservice.Reminder();
                 return Ok(data);
 
             }catch(Exception ex)

@@ -246,9 +246,9 @@ public async Task <string> Login(LoginRequestDTO loginrequest)
 
          
             var adminToken = CreateToken(admin);
-    //         var data = await _bikeDbContext.RentalRequests
-    //     .Where(r => r.Status == Status.Pending && r.Due <= 0)
-    //     .ToListAsync();
+        //     var data = await _bikeDbContext.RentalRequests
+        // .Where(r => r.Status == Status.Pending && r.Due <= 0)
+        // .ToListAsync();
 
     // foreach (var req in data)
     // {
@@ -295,7 +295,7 @@ public async Task <string> Login(LoginRequestDTO loginrequest)
    
 
       
-    }
+    // }
 
    
     await _bikeDbContext.SaveChangesAsync();
@@ -330,8 +330,8 @@ Console.WriteLine(token);
         new Claim("userId", user.UserId.ToString()),
         new Claim("email", user.Email),
         new Claim("role", user.Role.ToString()),
-        new Claim("FirstName",user.FirstName.ToString()),
-        new Claim("LastName",user.LastName.ToString())
+        new Claim("firstname",user.FirstName.ToString()),
+        new Claim("lastname",user.LastName.ToString())
     };
 
 

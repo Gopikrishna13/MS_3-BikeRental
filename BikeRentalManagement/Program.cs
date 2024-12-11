@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Configuration;
 using BikeRentalManagement.Database;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.IService;
@@ -16,8 +17,16 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using BikeRentalManagement;
+//using Twilio;
+//using Twilio.Rest.Api.V2010.Account;
+//using Twilio.Types;
+//using Twilio.TwiML;
+using BikeRentalManagement.Database.Entities;
+
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+//builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("Twilio"));
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -118,7 +127,8 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("DailyApiTrigger")
-        .WithCronSchedule("0 * * * * ?")); // CRON expression for every minute
+        //.WithCronSchedule("0 * * * * ?")); // CRON expression for every minute
+        .StartNow());
 });
 
 // Register Quartz as a hosted service

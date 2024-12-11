@@ -4,16 +4,25 @@ using BikeRentalManagement.DTOs.RequestDTOs;
 using BikeRentalManagement.DTOs.ResponseDTOs;
 using BikeRentalManagement.IRepository;
 using BikeRentalManagement.IService;
+using Microsoft.Extensions.Configuration;
+//using Twilio; 
+//using Twilio.Rest.Api.V2010.Account;
+using MailKit.Net.Smtp;
+using MimeKit;
+using System.Net.WebSockets;
+
 
 namespace BikeRentalManagement.Service;
 
 public class RentService:IRentService
 {
     private readonly IRentRepository _rentRepository;
+    private readonly IConfiguration _configuration;
 
-    public RentService(IRentRepository rentRepository)
+    public RentService(IRentRepository rentRepository,IConfiguration configuration)
     {
         _rentRepository=rentRepository;
+        _configuration=configuration;
     }
     public async Task<bool>RequestRent(RentRequestDTO rentRequestDTO)
      {
@@ -188,10 +197,99 @@ public async Task <ICollection<object>>CountHistory(int id)
     return data;
 }
 
-public async Task <bool>LateReturns()
+public async Task <bool> LateReturns()
 {
     var data=await _rentRepository.LateReturns();
     return data;
 }
 
+
+
+
+
+ public async Task<List<RentalRequest>> Reminder()
+{
+    var data = await _rentRepository.Reminder();
+
+    if (data == null)
+    {
+        return new List<RentalRequest>();
+    }
+
+    //var twilioSettings = _configuration.GetSection("Twilio").Get<TwilioSettings>();
+
+    // if (twilioSettings == null )
+    // {
+        
+    //     return new List<RentalRequest>();
+    // }
+
+    //TwilioClient.Init(twilioSettings.AccountSid, twilioSettings.AuthToken);
+
+    foreach (var d in data)
+    {
+        var phoneNumber = await _rentRepository.GetPhoneNumber(d.UserId);
+        var Email=await _rentRepository.GetEmail(d.UserId);
+
+        if (string.IsNullOrEmpty(phoneNumber))
+        {
+           
+            continue;
+        }
+
+        // try
+        // {
+        //     phoneNumber="766946959";
+        //     phoneNumber=$"+94{phoneNumber}";
+        //     var to = new Twilio.Types.PhoneNumber(phoneNumber);
+        //     var message = MessageResource.Create(
+        //         to: to,
+        //         from: new Twilio.Types.PhoneNumber("13203355850"), 
+        //         body: $"You have booked a ride from {d.FromLocation} to {d.ToLocation}"
+        //     );
+
+        //     Console.WriteLine($"Message sent to {phoneNumber}: {message.Sid}");
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine($"Failed to send message to {phoneNumber}: {ex.Message}");
+        // }
+
+       await  SendEmail(d.FromLocation,d.ToLocation,Email);
+    }
+
+    return data;
 }
+
+public async Task <bool> SendEmail(string From,string To,string Email)
+{
+    var emailMessage = new MimeMessage();
+    emailMessage.From.Add(new MailboxAddress("No-Reply", "Me2@gmail.com"));
+    emailMessage.To.Add(new MailboxAddress("", Email));
+    emailMessage.Subject = "Ready For a Ride!";
+    emailMessage.Body = new TextPart("plain")
+    {
+        Text = $"  Your have booked a ride today from :{From} To {To} .\n"
+    };
+
+    using (var client = new SmtpClient())
+    {
+        try
+        {
+            await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("sivapakthangopikrishna69@gmail.com", "plev rbuw jsgh iipc");
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;  
+        }
+}
+
+}
+}
+
+
